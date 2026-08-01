@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pengunjung Wisata - Buper Talaga Pancar</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN untuk Grafik -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-emerald-900 text-emerald-100 flex flex-col justify-between hidden md:flex transition-all duration-300">
+        <div>
+            <div class="p-5 flex items-center space-x-3 border-b border-emerald-800">
+                <i data-lucide="trees" class="w-8 h-8 text-emerald-400"></i>
+                <div>
+                    <h1 class="font-bold text-lg tracking-wide text-white">Talaga Pancar</h1>
+                    <p class="text-xs text-emerald-400">Admin Dashboard</p>
+                </div>
+            </div>
+            <nav class="p-4 space-y-1">
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-xl bg-emerald-800 text-white font-medium transition">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-emerald-800/50 text-emerald-200 transition">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>Data Pengunjung</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-emerald-800/50 text-emerald-200 transition">
+                    <i data-lucide="ticket" class="w-5 h-5"></i>
+                    <span>Tiket & Reservasi</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-emerald-800/50 text-emerald-200 transition">
+                    <i data-lucide="store" class="w-5 h-5"></i>
+                    <span>Tenant / UMKM</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-emerald-800/50 text-emerald-200 transition">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                    <span>Pengaturan</span>
+                </a>
+            </nav>
+        </div>
+        <div class="p-4 border-t border-emerald-800 text-xs text-emerald-400 text-center">
+            Buper Talaga Pancar v1.0
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col h-full overflow-hidden">
+        
+        <!-- Top Navbar -->
+        <header class="bg-white border-b border-slate-200 h-16 flex items-center justify-between px-6 z-10">
+            <div class="flex items-center space-x-4">
+                <button class="md:hidden text-slate-600 focus:outline-none">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <h2 class="text-xl font-bold text-slate-800">Dashboard Pengunjung</h2>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden sm:block">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400"></i>
+                    </span>
+                    <input type="text" placeholder="Cari data..." class="pl-10 pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none w-64">
+                </div>
+                <div class="flex items-center space-x-3 border-l pl-4 border-slate-200">
+                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-800 font-bold">
+                        AD
+                    </div>
+                    <div class="hidden sm:block text-left">
+                        <p class="text-sm font-semibold text-slate-700">Admin Buper</p>
+                        <p class="text-xs text-slate-500">Pengelola Lokasi</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Scrollable Content -->
+        <main class="flex-1 overflow-y-auto p-6 space-y-6">
+
+            <!-- Metrics Cards Row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-slate-500 font-medium">Total Pengunjung Hari Ini</p>
+                        <h3 class="text-2xl font-bold text-slate-800 mt-1">1,482</h3>
+                        <span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full mt-2 inline-block">↑ 12% dari kemarin</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                        <i data-lucide="users" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-slate-500 font-medium">Pendapatan Tiket</p>
+                        <h3 class="text-2xl font-bold text-slate-800 mt-1">Rp 22.2 Juta</h3>
+                        <span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full mt-2 inline-block">↑ 8% minggu ini</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <i data-lucide="wallet" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-slate-500 font-medium">Spot Camping Aktif</p>
+                        <h3 class="text-2xl font-bold text-slate-800 mt-1">84 Tenda</h3>
+                        <span class="text-xs text-amber-600 font-semibold bg-amber-50 px-2 py-0.5 rounded-full mt-2 inline-block">Kapasitas 75%</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                        <i data-lucide="tent" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-slate-500 font-medium">Cuaca Lokasi</p>
+                        <h3 class="text-2xl font-bold text-slate-800 mt-1">24°C</h3>
+                        <span class="text-xs text-sky-600 font-semibold bg-sky-50 px-2 py-0.5 rounded-full mt-2 inline-block">Berawan Sejuk</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
+                        <i data-lucide="cloud-sun" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Line Chart -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm lg:col-span-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-slate-800">Statistik Pengunjung Mingguan</h3>
+                        <select class="bg-slate-100 border-none text-xs rounded-lg px-3 py-1.5 focus:ring-0 text-slate-600 font-medium">
+                            <option>7 Hari Terakhir</option>
+                            <option>Bulan Ini</option>
+                        </select>
+                    </div>
+                    <div class="relative h-72">
+                        <canvas id="visitorChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Doughnut Chart -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-800 mb-2">Kategori Aktivitas</h3>
+                        <p class="text-xs text-slate-500 mb-4">Distribusi preferensi pengunjung</p>
+                    </div>
+                    <div class="relative h-48 flex items-center justify-center">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                    <div class="mt-4 space-y-2 text-xs">
+                        <div class="flex justify-between items-center"><span class="flex items-center"><span class="w-3 h-3 bg-emerald-600 rounded-full mr-2"></span>Camping Ground</span><span class="font-bold">45%</span></div>
+                        <div class="flex justify-between items-center"><span class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>Outbound & Gathering</span><span class="font-bold">30%</span></div>
+                        <div class="flex justify-between items-center"><span class="flex items-center"><span class="w-3 h-3 bg-amber-400 rounded-full mr-2"></span>Wisata Hutan Pinus / Spot Foto</span><span class="font-bold">25%</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Visitors Table -->
+            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-800">Aktivitas Reservasi Terbaru</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Daftar pengunjung yang baru saja memesan tiket/lokasi.</p>
+                    </div>
+                    <button class="text-xs text-emerald-600 hover:text-emerald-700 font-semibold">Lihat Semua</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-400 text-xs uppercase tracking-wider font-semibold border-b border-slate-100">
+                                <th class="py-3 px-6">Nama Pengunjung</th>
+                                <th class="py-3 px-6">Kategori</th>
+                                <th class="py-3 px-6">Tanggal Kunjungan</th>
+                                <th class="py-3 px-6">Jumlah Orang</th>
+                                <th class="py-3 px-6">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm divide-y divide-slate-100 text-slate-600">
+                            <tr class="hover:bg-slate-50/55">
+                                <td class="py-4 px-6 font-medium text-slate-800 flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-bold text-xs text-slate-600">RH</div>
+                                    <span>Rian Hidayat</span>
+                                </td>
+                                <td class="py-4 px-6">Camping Ground</td>
+                                <td class="py-4 px-6">2 Agu 2026</td>
+                                <td class="py-4 px-6">4 Orang</td>
+                                <td class="py-4 px-6"><span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-medium">Terkonfirmasi</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/55">
+                                <td class="py-4 px-6 font-medium text-slate-800 flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-bold text-xs text-slate-600">SN</div>
+                                    <span>Siti Nurhaliza</span>
+                                </td>
+                                <td class="py-4 px-6">Outbound Keluarga</td>
+                                <td class="py-4 px-6">3 Agu 2026</td>
+                                <td class="py-4 px-6">15 Orang</td>
+                                <td class="py-4 px-6"><span class="bg-amber-50 text-amber-700 text-xs px-2.5 py-1 rounded-full font-medium">Menunggu Bayar</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/55">
+                                <td class="py-4 px-6 font-medium text-slate-800 flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-bold text-xs text-slate-600">DA</div>
+                                    <span>Dedi Arsandi</span>
+                                </td>
+                                <td class="py-4 px-6">Tiket Masuk Harian</td>
+                                <td class="py-4 px-6">1 Agu 2026</td>
+                                <td class="py-4 px-6">2 Orang</td>
+                                <td class="py-4 px-6"><span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-medium">Selesai</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Script Initialize Icons and Charts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Line Chart Visitor Stats
+        const ctxVisitor = document.getElementById('visitorChart').getContext('2d');
+        new Chart(ctxVisitor, {
+            type: 'line',
+            data: {
+                labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+                datasets: [{
+                    label: 'Jumlah Pengunjung',
+                    data: [400, 450, 380, 600, 950, 1600, 1482],
+                    borderColor: '#059669',
+                    backgroundColor: 'rgba(5, 150, 105, 0.05)',
+                    borderWidth: 2.5,
+                    fill: true,
+                    tension: 0.35
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: '#f1f5f9' }, ticks: { font: { size: 11 } } },
+                    x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+                }
+            }
+        });
+
+        // Doughnut Chart Category
+        const ctxCategory = document.getElementById('categoryChart').getContext('2d');
+        new Chart(ctxCategory, {
+            type: 'doughnut',
+            data: {
+                labels: ['Camping', 'Outbound', 'Wisata Harian'],
+                datasets: [{
+                    data: [45, 30, 25],
+                    backgroundColor: ['#059669', '#3b82f6', '#fbbf24'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                cutout: '75%'
+            }
+        });
+    </script>
+</body>
+</html>
