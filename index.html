@@ -47,7 +47,7 @@
                     <button @click="activePeriod = 'mingguan'" :class="activePeriod === 'mingguan' ? 'bg-gray-700 text-white' : 'text-gray-400'" class="px-3 py-1.5 rounded-lg text-xs font-medium transition">Mingguan</button>
                     <button @click="activePeriod = 'bulanan'" :class="activePeriod === 'bulanan' ? 'bg-gray-700 text-white' : 'text-gray-400'" class="px-3 py-1.5 rounded-lg text-xs font-medium transition">Bulanan</button>
                 </div>
-                <!-- Tombol Input Data Terproteksi (Kode Rahasia Disembunyikan dari UI) -->
+                <!-- Tombol Input Data Terproteksi -->
                 <button @click="verifyPin('tambah', null)" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1.5">
                     + Tambah Data
                 </button>
@@ -59,7 +59,7 @@
             <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 p-6 rounded-2xl border border-gray-700 flex justify-between items-center shadow-xl">
                 <div>
                     <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Total Pengunjung Harian (Hari Ini)</span>
-                    <h3 class="text-3xl font-extrabold text-white mt-1" x-text="summaryData[activeCategory].harian"></h3>
+                    <h3 class="text-3xl font-extrabold text-white mt-1" x-text="summaryData[activeCategory].harian + ' Orang'"></h3>
                     <p class="text-xs text-gray-400 mt-1">Pembaruan data langsung dari gerbang masuk</p>
                 </div>
                 <div class="p-4 bg-emerald-950/40 border border-emerald-800/40 rounded-2xl text-emerald-400 text-2xl">📅</div>
@@ -68,14 +68,14 @@
             <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 p-6 rounded-2xl border border-gray-700 flex justify-between items-center shadow-xl">
                 <div>
                     <span class="text-xs font-semibold text-blue-400 tracking-wider uppercase">Total Pengunjung Bulanan (Bulan Ini)</span>
-                    <h3 class="text-3xl font-extrabold text-white mt-1" x-text="summaryData[activeCategory].bulanan"></h3>
+                    <h3 class="text-3xl font-extrabold text-white mt-1" x-text="summaryData[activeCategory].bulanan + ' Orang'"></h3>
                     <p class="text-xs text-gray-400 mt-1">Akumulasi total dari minggu ke-1 hingga saat ini</p>
                 </div>
                 <div class="p-4 bg-blue-950/40 border border-blue-800/40 rounded-2xl text-blue-400 text-2xl">📊</div>
             </div>
         </div>
 
-        <!-- MENU BARU: TOTAL GABUNGAN HARIAN (CAMPING + WISATA HARIAN) -->
+        <!-- MENU KHUSUS: TOTAL GABUNGAN HARIAN -->
         <div class="bg-gradient-to-r from-emerald-900/50 via-gray-900 to-gray-900 border border-emerald-600/40 p-6 rounded-2xl shadow-xl space-y-4">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-gray-800 pb-4">
                 <div>
@@ -111,16 +111,16 @@
             <div class="bg-gray-800/40 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
                 <div>
                     <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Puncak Kunjungan Terpadat</span>
-                    <h4 class="text-lg font-bold text-white mt-1">Hari Minggu (Minggu ke-2 Bulan Ini)</h4>
-                    <p class="text-xs text-gray-400 mt-0.5">Menyumbang <strong class="text-emerald-400">34%</strong> dari total volume pengunjung bulanan.</p>
+                    <h4 class="text-lg font-bold text-white mt-1">Belum ada data</h4>
+                    <p class="text-xs text-gray-400 mt-0.5">Menyumbang <strong class="text-emerald-400">0%</strong> dari total volume pengunjung.</p>
                 </div>
                 <div class="p-3 bg-emerald-950/60 border border-emerald-800/50 rounded-xl text-emerald-400 text-xl">📈</div>
             </div>
             <div class="bg-gray-800/40 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
                 <div>
                     <span class="text-xs font-semibold text-amber-400 tracking-wider uppercase">Volume Kunjungan Terendah</span>
-                    <h4 class="text-lg font-bold text-white mt-1">Hari Selasa (Minggu ke-4)</h4>
-                    <p class="text-xs text-gray-400 mt-0.5">Hanya mencakup <strong class="text-amber-400">6%</strong> dari total kunjungan.</p>
+                    <h4 class="text-lg font-bold text-white mt-1">Belum ada data</h4>
+                    <p class="text-xs text-gray-400 mt-0.5">Hanya mencakup <strong class="text-amber-400">0%</strong> dari total kunjungan.</p>
                 </div>
                 <div class="p-3 bg-amber-950/60 border border-amber-800/50 rounded-xl text-amber-400 text-xl">📉</div>
             </div>
@@ -171,7 +171,7 @@
                 <h3 class="text-xs md:text-sm text-emerald-100 font-bold tracking-wider mb-1">TOTAL AKUMULASI PENGUNJUNG AKTIF (<span class="uppercase" x-text="activeCategory"></span> - <span class="uppercase" x-text="activePeriod"></span>)</h3>
                 <p class="text-xs md:text-sm text-emerald-200">Data terkalkulasi otomatis berdasarkan filter waktu terpilih</p>
             </div>
-            <p class="text-3xl md:text-4xl font-extrabold text-white whitespace-nowrap" x-text="stats[activeCategory][activePeriod].total"></p>
+            <p class="text-3xl md:text-4xl font-extrabold text-white whitespace-nowrap" x-text="stats[activeCategory][activePeriod].total + ' Orang'"></p>
         </div>
 
         <!-- BAGIAN 4: LOG AKTIVITAS & MANAJEMEN DATA -->
@@ -195,6 +195,11 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-800/60 text-sm text-gray-300">
+                            <template x-if="logs.length === 0">
+                                <tr>
+                                    <td colspan="6" class="py-8 text-center text-gray-500 text-xs">Belum ada data log aktivitas masuk. Silakan tambah data baru.</td>
+                                </tr>
+                            </template>
                             <template x-for="(item, index) in logs" :key="index">
                                 <tr class="hover:bg-gray-800/30 transition">
                                     <td class="py-4 px-6 font-medium text-white" x-text="item.waktu"></td>
@@ -267,7 +272,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT LOGIKA ALPINE.JS -->
+    <!-- SCRIPT LOGIKA ALPINE.JS (DIATUR 0) -->
     <script>
         function dashboardData() {
             return {
@@ -280,42 +285,37 @@
                 modalAction: '',
                 selectedIndex: null,
                 
-                // Ringkasan Harian dan Bulanan Utama
+                // Ringkasan Utama Diatur 0
                 summaryData: {
-                    camping: { harian: '450 Orang', bulanan: '12,450 Orang' },
-                    wisata: { harian: '820 Orang', bulanan: '24,300 Orang' }
+                    camping: { harian: '0', bulanan: '0' },
+                    wisata: { harian: '0', bulanan: '0' }
                 },
 
-                // Total Gabungan Harian (Camping + Wisata Harian)
+                // Total Gabungan Harian Diatur 0
                 combinedDaily: {
-                    pria: '600',
-                    wanita: '460',
-                    anak: '160',
-                    turis: '50',
-                    total: '1,270'
+                    pria: '0',
+                    wanita: '0',
+                    anak: '0',
+                    turis: '0',
+                    total: '0'
                 },
 
-                // Data Demografi Terstruktur Berdasarkan Periode
+                // Data Demografi Diatur 0
                 stats: {
                     camping: {
-                        harian: { pria: '220', wanita: '150', anak: '60', turis: '20', total: '450 Orang' },
-                        mingguan: { pria: '1,540', wanita: '1,200', anak: '450', turis: '130', total: '3,320 Orang' },
-                        bulanan: { pria: '5,800', wanita: '4,650', anak: '1,400', turis: '600', total: '12,450 Orang' }
+                        harian: { pria: '0', wanita: '0', anak: '0', turis: '0', total: '0' },
+                        mingguan: { pria: '0', wanita: '0', anak: '0', turis: '0', total: '0' },
+                        bulanan: { pria: '0', wanita: '0', anak: '0', turis: '0', total: '0' }
                     },
                     wisata: {
-                        harian: { pria: '380', wanita: '310', anak: '100', turis: '30', total: '820 Orang' },
-                        mingguan: { pria: '2,800', wanita: '2,650', anak: '920', turis: '240', total: '6,610 Orang' },
-                        bulanan: { pria: '11,200', wanita: '10,100', anak: '2,100', turis: '900', total: '24,300 Orang' }
+                        harian: { pria: '0', wanita: '0', anak: '0', turis: '0', total: '0' },
+                        mingguan: { pria: '0', wanita: '0', anak: '0', turis: '0', total: '0' },
+                        bulanan: { pria: '0', wanita: '0', anak: '0', turis: '0', total: '0' }
                     }
                 },
 
-                // Data Log Tabel
-                logs: [
-                    { waktu: '18:45 WIB', kategori: 'Laki-Laki (Grup Camping)', asal: 'Jakarta & Sekitarnya', jumlah: '6 Orang', petugas: 'Rian (Pos 1)' },
-                    { waktu: '18:30 WIB', kategori: 'Turis Asing (Mancanegara)', asal: 'Singapura & Belanda', jumlah: '4 Orang', petugas: 'Siti (Pos Utama)' },
-                    { waktu: '18:15 WIB', kategori: 'Keluarga (Wanita & Anak)', asal: 'Bandung', jumlah: '5 Orang', petugas: 'Rian (Pos 1)' },
-                    { waktu: '17:55 WIB', kategori: 'Laki-Laki & Perempuan', asal: 'Bogor', jumlah: '8 Orang', petugas: 'Siti (Pos Utama)' }
-                ],
+                // Log Tabel Dikosongkan
+                logs: [],
 
                 formData: { waktu: '', kategori: '', asal: '', jumlah: '', petugas: '' },
 
