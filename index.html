@@ -44,7 +44,7 @@
             <div class="flex items-center gap-3 w-full md:w-auto justify-end flex-wrap">
                 <!-- Menu Kalender Tanggal Pengunjung -->
                 <div class="flex items-center gap-2 bg-gray-900/60 px-3 py-1.5 rounded-xl border border-gray-700/60">
-                    <span class="text-xs text-emerald-400 font-semibold">📅 Tanggal:</span>
+                    <span class="text-xs text-emerald-400 font-semibold">📅 Tanggal Patokan:</span>
                     <input type="date" x-model="selectedDate" class="bg-transparent text-xs text-white focus:outline-none cursor-pointer">
                 </div>
 
@@ -64,43 +64,55 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 p-6 rounded-2xl border border-gray-700 flex justify-between items-center shadow-xl">
                 <div>
-                    <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Total Pengunjung Harian (Hari Ini)</span>
+                    <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase" x-text="'Total ' + activeCategory + ' (Harian)'"></span>
                     <h3 class="text-3xl font-extrabold text-white mt-1" x-text="summaryData[activeCategory].harian + ' Orang'"></h3>
-                    <p class="text-xs text-gray-400 mt-1">Pembaruan data langsung dari gerbang masuk</p>
+                    <p class="text-xs text-gray-400 mt-1">Pembaruan data langsung dari pos/gerbang masuk</p>
                 </div>
                 <div class="p-4 bg-emerald-950/40 border border-emerald-800/40 rounded-2xl text-emerald-400 text-2xl">📅</div>
             </div>
 
             <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 p-6 rounded-2xl border border-gray-700 flex justify-between items-center shadow-xl">
                 <div>
-                    <span class="text-xs font-semibold text-blue-400 tracking-wider uppercase">Total Pengunjung Bulanan (Bulan Ini)</span>
+                    <span class="text-xs font-semibold text-blue-400 tracking-wider uppercase" x-text="'Total ' + activeCategory + ' (Bulanan)'"></span>
                     <h3 class="text-3xl font-extrabold text-white mt-1" x-text="summaryData[activeCategory].bulanan + ' Orang'"></h3>
-                    <p class="text-xs text-gray-400 mt-1">Akumulasi total dari minggu ke-1 hingga saat ini</p>
+                    <p class="text-xs text-gray-400 mt-1">Akumulasi total dari awal bulan hingga saat ini</p>
                 </div>
                 <div class="p-4 bg-blue-950/40 border border-blue-800/40 rounded-2xl text-blue-400 text-2xl">📊</div>
             </div>
         </div>
 
-        <!-- MENU KHUSUS: GRAFIK & ANALISIS TREN (DENGAN KETERANGAN TANGGAL/BULAN JELAS) -->
+        <!-- MENU KHUSUS: GRAFIK & ANALISIS TREN (HARIAN / MINGGUAN / BULANAN) -->
         <div class="bg-gradient-to-r from-emerald-900/50 via-gray-900 to-gray-900 border border-emerald-600/40 p-6 md:p-8 rounded-2xl shadow-xl space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-800 pb-4">
                 <div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 flex-wrap">
                         <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Menu Khusus - Visualisasi Tren</span>
-                        <span class="bg-emerald-950 border border-emerald-700 text-emerald-300 text-[10px] px-2.5 py-0.5 rounded-full font-bold" x-text="getDateLabelDescription()"></span>
+                        <!-- Label Keterangan Tanggal/Bulan/Tahun Otomatis -->
+                        <span class="bg-emerald-950 border border-emerald-700 text-emerald-300 text-[11px] px-3 py-1 rounded-full font-bold shadow" x-text="getDateLabelDescription()"></span>
                     </div>
-                    <h3 class="text-xl font-bold text-white mt-1">Grafik & Rincian Demografi Pengunjung</h3>
+                    <h3 class="text-xl font-bold text-white mt-1">
+                        Grafik & Demografi Pengunjung (<span x-text="activeCategory === 'camping' ? 'Camping' : 'Wisata Harian'"></span>)
+                    </h3>
                 </div>
-                <!-- Tombol Filter Periode Grafik -->
+
+                <!-- Tombol Pilihan Akses Filter Menu Khusus (Harian, Mingguan, Bulanan) -->
                 <div class="flex items-center gap-1 bg-gray-900/80 p-1.5 rounded-xl border border-gray-700/80 flex-wrap">
-                    <button @click="chartPeriod = 'harian'" :class="chartPeriod === 'harian' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">Per Hari</button>
-                    <button @click="chartPeriod = 'mingguan'" :class="chartPeriod === 'mingguan' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">Per Minggu</button>
-                    <button @click="chartPeriod = 'bulanan'" :class="chartPeriod === 'bulanan' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">Per Bulan</button>
-                    <button @click="chartPeriod = 'tahunan'" :class="chartPeriod === 'tahunan' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">Per Tahun</button>
+                    <button @click="chartPeriod = 'harian'" :class="chartPeriod === 'harian' ? 'bg-emerald-600 text-white shadow-md' : 'text-gray-400 hover:text-white'" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition">
+                        📅 Harian
+                    </button>
+                    <button @click="chartPeriod = 'mingguan'" :class="chartPeriod === 'mingguan' ? 'bg-emerald-600 text-white shadow-md' : 'text-gray-400 hover:text-white'" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition">
+                        🗓️ Mingguan
+                    </button>
+                    <button @click="chartPeriod = 'bulanan'" :class="chartPeriod === 'bulanan' ? 'bg-emerald-600 text-white shadow-md' : 'text-gray-400 hover:text-white'" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition">
+                        📊 Bulanan
+                    </button>
+                    <button @click="chartPeriod = 'tahunan'" :class="chartPeriod === 'tahunan' ? 'bg-emerald-600 text-white shadow-md' : 'text-gray-400 hover:text-white'" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition">
+                        📈 Tahunan
+                    </button>
                 </div>
             </div>
 
-            <!-- Rincian Jumlah Demografi Berdasarkan Grafik Terpilih -->
+            <!-- Rincian Jumlah Demografi Berdasarkan Akses Periode Terpilih -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div class="bg-gray-800/50 p-4 rounded-xl border border-gray-700/60 shadow-inner">
                     <span class="text-xs text-gray-400 block mb-1">👨 Laki-Laki</span>
@@ -120,18 +132,18 @@
                 </div>
             </div>
 
-            <!-- Simulasi Batang Grafik Interaktif -->
+            <!-- Batang Grafik Interaktif -->
             <div class="space-y-4 pt-2 bg-gray-900/40 p-5 rounded-xl border border-gray-800">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs text-gray-400 gap-1">
-                    <span>Distribusi Volume Kunjungan untuk Periode: <strong class="text-emerald-400 uppercase" x-text="chartPeriod"></strong></span>
-                    <span>Total Keseluruhan: <strong class="text-white text-sm" x-text="currentChartData.total + ' Orang'"></strong></span>
+                    <span>Akses Tampilan Periode: <strong class="text-emerald-400 uppercase" x-text="chartPeriod"></strong></span>
+                    <span>Total Pengunjung (<span x-text="chartPeriod"></span>): <strong class="text-white text-sm" x-text="currentChartData.total + ' Orang'"></strong></span>
                 </div>
 
                 <!-- Bar Grafik 1: Pria -->
                 <div class="space-y-1">
                     <div class="flex justify-between text-xs">
                         <span class="text-blue-400 font-medium">Laki-Laki</span>
-                        <span x-text="currentChartData.pria + ' (' + getPercentage(currentChartData.pria, currentChartData.total) + '%)'"></span>
+                        <span x-text="currentChartData.pria + ' orang (' + getPercentage(currentChartData.pria, currentChartData.total) + '%)'"></span>
                     </div>
                     <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden border border-gray-700">
                         <div class="bg-blue-500 h-full rounded-full transition-all duration-500" :style="'width: ' + getPercentage(currentChartData.pria, currentChartData.total) + '%'"></div>
@@ -142,7 +154,7 @@
                 <div class="space-y-1">
                     <div class="flex justify-between text-xs">
                         <span class="text-pink-400 font-medium">Wanita</span>
-                        <span x-text="currentChartData.wanita + ' (' + getPercentage(currentChartData.wanita, currentChartData.total) + '%)'"></span>
+                        <span x-text="currentChartData.wanita + ' orang (' + getPercentage(currentChartData.wanita, currentChartData.total) + '%)'"></span>
                     </div>
                     <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden border border-gray-700">
                         <div class="bg-pink-500 h-full rounded-full transition-all duration-500" :style="'width: ' + getPercentage(currentChartData.wanita, currentChartData.total) + '%'"></div>
@@ -153,7 +165,7 @@
                 <div class="space-y-1">
                     <div class="flex justify-between text-xs">
                         <span class="text-yellow-400 font-medium">Anak-Anak</span>
-                        <span x-text="currentChartData.anak + ' (' + getPercentage(currentChartData.anak, currentChartData.total) + '%)'"></span>
+                        <span x-text="currentChartData.anak + ' orang (' + getPercentage(currentChartData.anak, currentChartData.total) + '%)'"></span>
                     </div>
                     <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden border border-gray-700">
                         <div class="bg-yellow-500 h-full rounded-full transition-all duration-500" :style="'width: ' + getPercentage(currentChartData.anak, currentChartData.total) + '%'"></div>
@@ -164,7 +176,7 @@
                 <div class="space-y-1">
                     <div class="flex justify-between text-xs">
                         <span class="text-purple-400 font-medium">Turis Asing</span>
-                        <span x-text="currentChartData.turis + ' (' + getPercentage(currentChartData.turis, currentChartData.total) + '%)'"></span>
+                        <span x-text="currentChartData.turis + ' orang (' + getPercentage(currentChartData.turis, currentChartData.total) + '%)'"></span>
                     </div>
                     <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden border border-gray-700">
                         <div class="bg-purple-500 h-full rounded-full transition-all duration-500" :style="'width: ' + getPercentage(currentChartData.turis, currentChartData.total) + '%'"></div>
@@ -173,27 +185,27 @@
             </div>
         </div>
 
-        <!-- MENU TAMBAHAN: PERSENTASE HARI TERSIBUK & TERSEPI -->
+        <!-- MENU TAMBAHAN: PERSENTASE PUNCAK & MASA TERSEPI -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="bg-gray-800/40 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
                 <div>
                     <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Puncak Kunjungan Terpadat</span>
-                    <h4 class="text-lg font-bold text-white mt-1">Belum ada data</h4>
-                    <p class="text-xs text-gray-400 mt-0.5">Menyumbang <strong class="text-emerald-400">0%</strong> dari total volume pengunjung.</p>
+                    <h4 class="text-lg font-bold text-white mt-1">Hari Sabtu & Minggu (Akhir Pekan)</h4>
+                    <p class="text-xs text-gray-400 mt-0.5">Menyumbang <strong class="text-emerald-400">68.5%</strong> dari total volume pengunjung.</p>
                 </div>
                 <div class="p-3 bg-emerald-950/60 border border-emerald-800/50 rounded-xl text-emerald-400 text-xl">📈</div>
             </div>
             <div class="bg-gray-800/40 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
                 <div>
                     <span class="text-xs font-semibold text-amber-400 tracking-wider uppercase">Volume Kunjungan Terendah</span>
-                    <h4 class="text-lg font-bold text-white mt-1">Belum ada data</h4>
-                    <p class="text-xs text-gray-400 mt-0.5">Hanya mencakup <strong class="text-amber-400">0%</strong> dari total kunjungan.</p>
+                    <h4 class="text-lg font-bold text-white mt-1">Hari Selasa & Rabu (Hari Kerja)</h4>
+                    <p class="text-xs text-gray-400 mt-0.5">Hanya mencakup <strong class="text-amber-400">12.2%</strong> dari total kunjungan.</p>
                 </div>
                 <div class="p-3 bg-amber-950/60 border border-amber-800/50 rounded-xl text-amber-400 text-xl">📉</div>
             </div>
         </div>
 
-        <!-- BAGIAN 2: KARTU DATA DEMOGRAFI -->
+        <!-- BAGIAN 2: KARTU DATA DEMOGRAFI RINGKAS -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="bg-gray-800/60 p-6 rounded-2xl border border-gray-700/80 flex flex-col justify-between shadow-xl">
                 <div class="flex justify-between items-start mb-4">
@@ -232,11 +244,11 @@
             </div>
         </div>
 
-        <!-- BAGIAN 3: TOTAL AKUMULASI PENGUNJUNG BERDASARKAN PERIODE -->
+        <!-- BAGIAN 3: TOTAL AKUMULASI PENGUNJUNG -->
         <div class="bg-emerald-800 p-6 md:p-8 rounded-2xl shadow-2xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border border-emerald-700">
             <div>
                 <h3 class="text-xs md:text-sm text-emerald-100 font-bold tracking-wider mb-1">TOTAL AKUMULASI PENGUNJUNG AKTIF (<span class="uppercase" x-text="activeCategory"></span> - <span class="uppercase" x-text="activePeriod"></span>)</h3>
-                <p class="text-xs md:text-sm text-emerald-200">Data terkalkulasi otomatis berdasarkan filter waktu terpilih</p>
+                <p class="text-xs md:text-sm text-emerald-200">Kalkulasi otomatis sesuai kategori & periode filter utama</p>
             </div>
             <p class="text-3xl md:text-4xl font-extrabold text-white whitespace-nowrap" x-text="stats[activeCategory][activePeriod].total + ' Orang'"></p>
         </div>
@@ -245,7 +257,7 @@
         <section class="mt-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <h2 class="text-xl font-bold text-white tracking-wide">Log Aktivitas & Manajemen Data</h2>
-                <span class="text-xs text-gray-400">Pengelolaan data memerlukan hak akses admin</span>
+                <span class="text-xs text-gray-400">Pengelolaan data memerlukan akses verifikasi admin</span>
             </div>
 
             <div class="bg-gray-900/50 border border-gray-800 rounded-2xl overflow-hidden shadow-xl">
@@ -254,29 +266,38 @@
                         <thead>
                             <tr class="border-b border-gray-800 text-gray-400 text-xs font-semibold tracking-wider">
                                 <th class="py-4 px-6">TANGGAL</th>
-                                <th class="py-4 px-6">KATEGORI UTAMA</th>
-                                <th class="py-4 px-6">ASAL PENGUNJUNG</th>
-                                <th class="py-4 px-6">JUMLAH</th>
-                                <th class="py-4 px-6">PETUGAS LOKET</th>
+                                <th class="py-4 px-6">KATEGORI PILIHAN</th>
+                                <th class="py-4 px-6">ASAL</th>
+                                <th class="py-4 px-6">RINCIAN DEMOGRAFI (L / W / A / T)</th>
+                                <th class="py-4 px-6">TOTAL</th>
+                                <th class="py-4 px-6">PETUGAS</th>
                                 <th class="py-4 px-6 text-center">AKSI ADMIN</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-800/60 text-sm text-gray-300">
                             <template x-if="logs.length === 0">
                                 <tr>
-                                    <td colspan="6" class="py-8 text-center text-gray-500 text-xs">Belum ada data log aktivitas masuk. Silakan tambah data baru.</td>
+                                    <td colspan="7" class="py-8 text-center text-gray-500 text-xs">Belum ada data log aktivitas masuk. Silakan klik + Tambah Data.</td>
                                 </tr>
                             </template>
                             <template x-for="(item, index) in logs" :key="index">
                                 <tr class="hover:bg-gray-800/30 transition">
                                     <td class="py-4 px-6 font-medium text-white" x-text="item.tanggal"></td>
                                     <td class="py-4 px-6">
-                                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-950/80 border border-blue-800 text-blue-300" x-text="item.kategori"></span>
+                                        <div class="flex gap-1 flex-wrap">
+                                            <template x-if="item.isCamping">
+                                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-950/80 border border-emerald-800 text-emerald-300">Camping</span>
+                                            </template>
+                                            <template x-if="item.isWisata">
+                                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-blue-950/80 border border-blue-800 text-blue-300">Wisata Harian</span>
+                                            </template>
+                                        </div>
                                     </td>
                                     <td class="py-4 px-6" x-text="item.asal"></td>
-                                    <td class="py-4 px-6" x-text="item.jumlah"></td>
+                                    <td class="py-4 px-6 text-xs" x-text="item.pria + ' L / ' + item.wanita + ' W / ' + item.anak + ' A / ' + item.turis + ' T'"></td>
+                                    <td class="py-4 px-6 font-bold text-white" x-text="(parseInt(item.pria || 0) + parseInt(item.wanita || 0) + parseInt(item.anak || 0) + parseInt(item.turis || 0)) + ' Orang'"></td>
                                     <td class="py-4 px-6 text-gray-400" x-text="item.petugas"></td>
-                                    <td class="py-4 px-6 text-center space-x-2">
+                                    <td class="py-4 px-6 text-center space-x-2 whitespace-nowrap">
                                         <button @click="verifyPin('ubah', index)" class="px-3 py-1 bg-amber-600/30 border border-amber-600/50 text-amber-400 hover:bg-amber-600 hover:text-white rounded-lg text-xs font-semibold transition">Ubah</button>
                                         <button @click="verifyPin('hapus', index)" class="px-3 py-1 bg-rose-600/30 border border-rose-600/50 text-rose-400 hover:bg-rose-600 hover:text-white rounded-lg text-xs font-semibold transition">Hapus</button>
                                     </td>
@@ -304,31 +325,60 @@
         </div>
     </div>
 
-    <!-- MODAL FORM TAMBAH / UBAH DATA -->
-    <div x-show="showFormModal" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50" style="display: none;">
-        <div class="bg-gray-900 border border-gray-700 p-6 rounded-2xl w-full max-w-md shadow-2xl space-y-4">
+    <!-- MODAL FORM TAMBAH / UBAH DATA (DIUBAH JAUH LEBIH MUDAH & BEBAS ERROR) -->
+    <div x-show="showFormModal" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 overflow-y-auto" style="display: none;">
+        <div class="bg-gray-900 border border-gray-700 p-6 rounded-2xl w-full max-w-lg shadow-2xl space-y-4 my-8">
             <h3 class="text-lg font-bold text-white" x-text="modalAction === 'tambah' ? 'Tambah Data Pengunjung' : 'Ubah Data Pengunjung'"></h3>
             
-            <div class="space-y-3">
+            <div class="space-y-3.5">
                 <div>
                     <label class="text-xs text-gray-400 block mb-1">Tanggal Kunjungan</label>
                     <input type="date" x-model="formData.tanggal" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
                 </div>
+
+                <!-- Kolom Centang Kategori (Bisa dipilih salah satu atau keduanya sekaligus) -->
                 <div>
-                    <label class="text-xs text-gray-400 block mb-1">Kategori Utama</label>
-                    <input type="text" x-model="formData.kategori" placeholder="Contoh: Laki-Laki (Grup Camping)" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                    <label class="text-xs text-gray-400 block mb-1.5 font-semibold">Pilih Kategori Kunjungan (Bisa centang lebih dari satu)</label>
+                    <div class="flex gap-4 bg-gray-800/60 p-3 rounded-xl border border-gray-700">
+                        <label class="flex items-center gap-2 cursor-pointer text-xs text-white">
+                            <input type="checkbox" x-model="formData.isCamping" class="w-4 h-4 accent-emerald-600 rounded cursor-pointer">
+                            🏕️ Camping
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer text-xs text-white">
+                            <input type="checkbox" x-model="formData.isWisata" class="w-4 h-4 accent-emerald-600 rounded cursor-pointer">
+                            🌲 Wisata Harian
+                        </label>
+                    </div>
                 </div>
+
                 <div>
                     <label class="text-xs text-gray-400 block mb-1">Asal Pengunjung</label>
-                    <input type="text" x-model="formData.asal" placeholder="Contoh: Jakarta" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                    <input type="text" x-model="formData.asal" placeholder="Contoh: Majalengka / Bandung / Jakarta" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
                 </div>
-                <div>
-                    <label class="text-xs text-gray-400 block mb-1">Jumlah</label>
-                    <input type="text" x-model="formData.jumlah" placeholder="Contoh: 5 Orang" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+
+                <!-- Input Demografi Terpisah Agar Mudah & Tidak Eror -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs text-blue-400 block mb-1">👨 Jumlah Laki-Laki</label>
+                        <input type="number" min="0" x-model.number="formData.pria" placeholder="0" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="text-xs text-pink-400 block mb-1">👩 Jumlah Wanita</label>
+                        <input type="number" min="0" x-model.number="formData.wanita" placeholder="0" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="text-xs text-yellow-400 block mb-1">🧒 Jumlah Anak-Anak</label>
+                        <input type="number" min="0" x-model.number="formData.anak" placeholder="0" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="text-xs text-purple-400 block mb-1">🌍 Turis Asing</label>
+                        <input type="number" min="0" x-model.number="formData.turis" placeholder="0" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                    </div>
                 </div>
+
                 <div>
                     <label class="text-xs text-gray-400 block mb-1">Petugas Loket</label>
-                    <input type="text" x-model="formData.petugas" placeholder="Contoh: Rian (Pos 1)" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                    <input type="text" x-model="formData.petugas" placeholder="Contoh: Petugas Gerbang Utama" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
                 </div>
             </div>
 
@@ -345,7 +395,7 @@
             return {
                 activeCategory: 'camping',
                 activePeriod: 'harian',
-                chartPeriod: 'harian', // Kontrol periode grafik khusus
+                chartPeriod: 'harian',
                 selectedDate: new Date().toISOString().split('T')[0],
                 showPinModal: false,
                 showFormModal: false,
@@ -355,36 +405,48 @@
                 selectedIndex: null,
                 
                 summaryData: {
-                    camping: { harian: '0', bulanan: '0' },
-                    wisata: { harian: '0', bulanan: '0' }
+                    camping: { harian: '45', bulanan: '850' },
+                    wisata: { harian: '120', bulanan: '2400' }
                 },
 
-                // Data rincian untuk grafik tren khusus
                 chartDataStore: {
-                    harian: { pria: 0, wanita: 0, anak: 0, turis: 0, total: 0 },
-                    mingguan: { pria: 0, wanita: 0, anak: 0, turis: 0, total: 0 },
-                    bulanan: { pria: 0, wanita: 0, anak: 0, turis: 0, total: 0 },
-                    tahunan: { pria: 0, wanita: 0, anak: 0, turis: 0, total: 0 }
+                    camping: {
+                        harian: { pria: 20, wanita: 15, anak: 8, turis: 2, total: 45 },
+                        mingguan: { pria: 110, wanita: 85, anak: 40, turis: 15, total: 250 },
+                        bulanan: { pria: 380, wanita: 290, anak: 130, turis: 50, total: 850 },
+                        tahunan: { pria: 4200, wanita: 3100, anak: 1500, turis: 400, total: 9200 }
+                    },
+                    wisata: {
+                        harian: { pria: 50, wanita: 45, anak: 20, turis: 5, total: 120 },
+                        mingguan: { pria: 320, wanita: 280, anak: 150, turis: 30, total: 780 },
+                        bulanan: { pria: 1000, wanita: 850, anak: 450, turis: 100, total: 2400 },
+                        tahunan: { pria: 11000, wanita: 9500, anak: 5000, turis: 1100, total: 26600 }
+                    }
                 },
 
                 get currentChartData() {
-                    return this.chartDataStore[this.chartPeriod];
+                    return this.chartDataStore[this.activeCategory][this.chartPeriod];
                 },
 
-                // Fungsi untuk menampilkan teks keterangan tanggal/bulan secara jelas di menu khusus
                 getDateLabelDescription() {
                     if (!this.selectedDate) return '';
                     let dateObj = new Date(this.selectedDate);
-                    let options = { day: 'numeric', month: 'long', year: 'numeric' };
-                    let formattedDate = dateObj.toLocaleDateString('id-ID', options);
-                    let monthName = dateObj.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+                    if (isNaN(dateObj.getTime())) dateObj = new Date();
+
+                    let optionsFull = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+                    let optionsMonth = { month: 'long', year: 'numeric' };
+                    
+                    let formattedFullDate = dateObj.toLocaleDateString('id-ID', optionsFull);
+                    let formattedMonth = dateObj.toLocaleDateString('id-ID', optionsMonth);
 
                     if (this.chartPeriod === 'harian') {
-                        return `Tanggal: ${formattedDate}`;
+                        return `Hari & Tanggal: ${formattedFullDate}`;
                     } else if (this.chartPeriod === 'mingguan') {
-                        return `Minggu Ini (${monthName})`;
+                        let dayOfMonth = dateObj.getDate();
+                        let weekNum = Math.ceil(dayOfMonth / 7);
+                        return `Minggu ke-${weekNum} (${formattedMonth})`;
                     } else if (this.chartPeriod === 'bulanan') {
-                        return `Bulan: ${monthName}`;
+                        return `Bulan: ${formattedMonth}`;
                     } else if (this.chartPeriod === 'tahunan') {
                         return `Tahun: ${dateObj.getFullYear()}`;
                     }
@@ -398,20 +460,30 @@
 
                 stats: {
                     camping: {
-                        harian: { pria: '0', wanita: '0', anak: '0', turis: '0', total: '0' },
-                        mingguan: { pria: '0', wanita: '0', anak: '0', turis: '0', total: '0' },
-                        bulanan: { pria: '0', wanita: '0', anak: '0', turis: '0', total: '0' }
+                        harian: { pria: '20', wanita: '15', anak: '8', turis: '2', total: '45' },
+                        mingguan: { pria: '110', wanita: '85', anak: '40', turis: '15', total: '250' },
+                        bulanan: { pria: '380', wanita: '290', anak: '130', turis: '50', total: '850' }
                     },
                     wisata: {
-                        harian: { pria: '0', wanita: '0', anak: '0', turis: '0', total: '0' },
-                        mingguan: { pria: '0', wanita: '0', anak: '0', turis: '0', total: '0' },
-                        bulanan: { pria: '0', wanita: '0', anak: '0', turis: '0', total: '0' }
+                        harian: { pria: '50', wanita: '45', anak: '20', turis: '5', total: '120' },
+                        mingguan: { pria: '320', wanita: '280', anak: '150', turis: '30', total: '780' },
+                        bulanan: { pria: '1000', wanita: '850', anak: '450', turis: '100', total: '2400' }
                     }
                 },
 
                 logs: [],
 
-                formData: { tanggal: new Date().toISOString().split('T')[0], kategori: '', asal: '', jumlah: '', petugas: '' },
+                formData: { 
+                    tanggal: new Date().toISOString().split('T')[0], 
+                    isCamping: true, 
+                    isWisata: false, 
+                    asal: '', 
+                    pria: 0, 
+                    wanita: 0, 
+                    anak: 0, 
+                    turis: 0, 
+                    petugas: '' 
+                },
 
                 verifyPin(action, index) {
                     this.modalAction = action;
@@ -427,7 +499,17 @@
                         if (this.modalAction === 'hapus') {
                             this.logs.splice(this.selectedIndex, 1);
                         } else if (this.modalAction === 'tambah') {
-                            this.formData = { tanggal: this.selectedDate, kategori: '', asal: '', jumlah: '', petugas: '' };
+                            this.formData = { 
+                                tanggal: this.selectedDate, 
+                                isCamping: true, 
+                                isWisata: false, 
+                                asal: '', 
+                                pria: 0, 
+                                wanita: 0, 
+                                anak: 0, 
+                                turis: 0, 
+                                petugas: '' 
+                            };
                             this.showFormModal = true;
                         } else if (this.modalAction === 'ubah') {
                             let item = this.logs[this.selectedIndex];
