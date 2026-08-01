@@ -81,33 +81,91 @@
             </div>
         </div>
 
-        <!-- MENU KHUSUS: TOTAL GABUNGAN HARIAN -->
-        <div class="bg-gradient-to-r from-emerald-900/50 via-gray-900 to-gray-900 border border-emerald-600/40 p-6 rounded-2xl shadow-xl space-y-4">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-gray-800 pb-4">
+        <!-- MENU KHUSUS: GRAFIK & ANALISIS TREN (Harian, Mingguan, Bulanan, Tahunan) -->
+        <div class="bg-gradient-to-r from-emerald-900/50 via-gray-900 to-gray-900 border border-emerald-600/40 p-6 md:p-8 rounded-2xl shadow-xl space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-800 pb-4">
                 <div>
-                    <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Menu Khusus</span>
-                    <h3 class="text-lg font-bold text-white">Total Gabungan Pengunjung Harian (Camping & Wisata)</h3>
+                    <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Menu Khusus - Visualisasi Tren</span>
+                    <h3 class="text-xl font-bold text-white">Grafik & Rincian Demografi Pengunjung</h3>
                 </div>
-                <div class="px-4 py-2 bg-emerald-800/60 border border-emerald-600 rounded-xl text-white font-extrabold text-lg w-fit">
-                    Total: <span x-text="combinedDaily.total"></span> Orang
+                <!-- Tombol Filter Periode Grafik -->
+                <div class="flex items-center gap-1 bg-gray-900/80 p-1.5 rounded-xl border border-gray-700/80">
+                    <button @click="chartPeriod = 'harian'" :class="chartPeriod === 'harian' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">Per Hari</button>
+                    <button @click="chartPeriod = 'mingguan'" :class="chartPeriod === 'mingguan' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">Per Minggu</button>
+                    <button @click="chartPeriod = 'bulanan'" :class="chartPeriod === 'bulanan' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">Per Bulan</button>
+                    <button @click="chartPeriod = 'tahunan'" :class="chartPeriod === 'tahunan' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">Per Tahun</button>
                 </div>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
-                <div class="bg-gray-800/50 p-3.5 rounded-xl border border-gray-700/60">
-                    <span class="text-xs text-gray-400 block mb-1">Laki-Laki</span>
-                    <strong class="text-xl text-blue-400" x-text="combinedDaily.pria"></strong>
+
+            <!-- Rincian Jumlah Demografi Berdasarkan Grafik Terpilih -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="bg-gray-800/50 p-4 rounded-xl border border-gray-700/60 shadow-inner">
+                    <span class="text-xs text-gray-400 block mb-1">👨 Laki-Laki</span>
+                    <strong class="text-2xl text-blue-400" x-text="currentChartData.pria + ' Orang'"></strong>
                 </div>
-                <div class="bg-gray-800/50 p-3.5 rounded-xl border border-gray-700/60">
-                    <span class="text-xs text-gray-400 block mb-1">Wanita</span>
-                    <strong class="text-xl text-pink-400" x-text="combinedDaily.wanita"></strong>
+                <div class="bg-gray-800/50 p-4 rounded-xl border border-gray-700/60 shadow-inner">
+                    <span class="text-xs text-gray-400 block mb-1">👩 Wanita</span>
+                    <strong class="text-2xl text-pink-400" x-text="currentChartData.wanita + ' Orang'"></strong>
                 </div>
-                <div class="bg-gray-800/50 p-3.5 rounded-xl border border-gray-700/60">
-                    <span class="text-xs text-gray-400 block mb-1">Anak-Anak</span>
-                    <strong class="text-xl text-yellow-400" x-text="combinedDaily.anak"></strong>
+                <div class="bg-gray-800/50 p-4 rounded-xl border border-gray-700/60 shadow-inner">
+                    <span class="text-xs text-gray-400 block mb-1">🧒 Anak-Anak</span>
+                    <strong class="text-2xl text-yellow-400" x-text="currentChartData.anak + ' Orang'"></strong>
                 </div>
-                <div class="bg-gray-800/50 p-3.5 rounded-xl border border-gray-700/60">
-                    <span class="text-xs text-gray-400 block mb-1">Turis Asing</span>
-                    <strong class="text-xl text-purple-400" x-text="combinedDaily.turis"></strong>
+                <div class="bg-gray-800/50 p-4 rounded-xl border border-gray-700/60 shadow-inner">
+                    <span class="text-xs text-gray-400 block mb-1">🌍 Turis Asing</span>
+                    <strong class="text-2xl text-purple-400" x-text="currentChartData.turis + ' Orang'"></strong>
+                </div>
+            </div>
+
+            <!-- Simulasi Batang Grafik Interaktif -->
+            <div class="space-y-4 pt-2 bg-gray-900/40 p-5 rounded-xl border border-gray-800">
+                <div class="flex justify-between items-center text-xs text-gray-400">
+                    <span>Distribusi Volume Kunjungan (<span class="uppercase text-emerald-400 font-bold" x-text="chartPeriod"></span>)</span>
+                    <span>Total Keseluruhan: <strong class="text-white" x-text="currentChartData.total + ' Orang'"></strong></span>
+                </div>
+
+                <!-- Bar Grafik 1: Pria -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-blue-400 font-medium">Laki-Laki</span>
+                        <span x-text="currentChartData.pria + ' (' + getPercentage(currentChartData.pria, currentChartData.total) + '%)'"></span>
+                    </div>
+                    <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden border border-gray-700">
+                        <div class="bg-blue-500 h-full rounded-full transition-all duration-500" :style="'width: ' + getPercentage(currentChartData.pria, currentChartData.total) + '%'"></div>
+                    </div>
+                </div>
+
+                <!-- Bar Grafik 2: Wanita -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-pink-400 font-medium">Wanita</span>
+                        <span x-text="currentChartData.wanita + ' (' + getPercentage(currentChartData.wanita, currentChartData.total) + '%)'"></span>
+                    </div>
+                    <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden border border-gray-700">
+                        <div class="bg-pink-500 h-full rounded-full transition-all duration-500" :style="'width: ' + getPercentage(currentChartData.wanita, currentChartData.total) + '%'"></div>
+                    </div>
+                </div>
+
+                <!-- Bar Grafik 3: Anak-anak -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-yellow-400 font-medium">Anak-Anak</span>
+                        <span x-text="currentChartData.anak + ' (' + getPercentage(currentChartData.anak, currentChartData.total) + '%)'"></span>
+                    </div>
+                    <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden border border-gray-700">
+                        <div class="bg-yellow-500 h-full rounded-full transition-all duration-500" :style="'width: ' + getPercentage(currentChartData.anak, currentChartData.total) + '%'"></div>
+                    </div>
+                </div>
+
+                <!-- Bar Grafik 4: Turis Asing -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-purple-400 font-medium">Turis Asing</span>
+                        <span x-text="currentChartData.turis + ' (' + getPercentage(currentChartData.turis, currentChartData.total) + '%)'"></span>
+                    </div>
+                    <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden border border-gray-700">
+                        <div class="bg-purple-500 h-full rounded-full transition-all duration-500" :style="'width: ' + getPercentage(currentChartData.turis, currentChartData.total) + '%'"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -243,7 +301,7 @@
         </div>
     </div>
 
-    <!-- MODAL FORM TAMBAH / UBAH DATA (Waktu Check-In Dihilangkan) -->
+    <!-- MODAL FORM TAMBAH / UBAH DATA -->
     <div x-show="showFormModal" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50" style="display: none;">
         <div class="bg-gray-900 border border-gray-700 p-6 rounded-2xl w-full max-w-md shadow-2xl space-y-4">
             <h3 class="text-lg font-bold text-white" x-text="modalAction === 'tambah' ? 'Tambah Data Pengunjung' : 'Ubah Data Pengunjung'"></h3>
@@ -284,7 +342,8 @@
             return {
                 activeCategory: 'camping',
                 activePeriod: 'harian',
-                selectedDate: new Date().toISOString().split('T')[0], // Default tanggal hari ini
+                chartPeriod: 'harian', // Kontrol periode grafik khusus
+                selectedDate: new Date().toISOString().split('T')[0],
                 showPinModal: false,
                 showFormModal: false,
                 inputPin: '',
@@ -297,12 +356,21 @@
                     wisata: { harian: '0', bulanan: '0' }
                 },
 
-                combinedDaily: {
-                    pria: '0',
-                    wanita: '0',
-                    anak: '0',
-                    turis: '0',
-                    total: '0'
+                // Data rincian untuk grafik tren khusus (Per Hari, Per Minggu, Per Bulan, Per Tahun)
+                chartDataStore: {
+                    harian: { pria: 0, wanita: 0, anak: 0, turis: 0, total: 0 },
+                    mingguan: { pria: 0, wanita: 0, anak: 0, turis: 0, total: 0 },
+                    bulanan: { pria: 0, wanita: 0, anak: 0, turis: 0, total: 0 },
+                    tahunan: { pria: 0, wanita: 0, anak: 0, turis: 0, total: 0 }
+                },
+
+                get currentChartData() {
+                    return this.chartDataStore[this.chartPeriod];
+                },
+
+                getPercentage(val, total) {
+                    if (!total || total === 0) return 0;
+                    return ((val / total) * 100).toFixed(1);
                 },
 
                 stats: {
