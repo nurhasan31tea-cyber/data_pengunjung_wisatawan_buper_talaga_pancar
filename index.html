@@ -3,262 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BUPER TALAGA PANCAR - Panel Interaktif Slide</title>
+    <title>Dashboard Buper Talaga Pancar</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0b132b;
-            color: #e2e8f0;
-            overflow-x: hidden;
-        }
-        .custom-card {
-            background-color: #1c2541;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        /* Kontainer Slider Utama */
-        .slider-container {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-            width: 300%;
-        }
-        .slide-item {
-            width: 100%;
-            flex-shrink: 0;
-            box-sizing: border-box;
-        }
-        .nav-btn.active {
-            background-color: #059669;
-            color: #ffffff;
-            border-color: #10b981;
-        }
-    </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-6 md:p-12">
+<body class="bg-[#111827] text-white font-sans min-h-screen p-6 md:p-10 flex flex-col gap-12">
 
-    <!-- Container Utama -->
-    <div class="max-w-7xl mx-auto w-full space-y-8">
-
-        <!-- Tombol Menu Pindah Slide Secara Instan atau Geser -->
-        <div class="flex flex-col items-center space-y-4">
-            <span class="text-xs font-semibold tracking-wider text-emerald-400 uppercase">Pilih Menu / Slide Tampilan</span>
-            <div class="inline-flex bg-slate-900/80 p-1.5 rounded-xl border border-slate-800 gap-2">
-                <button onclick="goToSlide(0)" id="btn-slide-0" class="nav-btn active px-5 py-2 rounded-lg text-xs font-semibold transition text-slate-300">
-                    1. Header Utama
-                </button>
-                <button onclick="goToSlide(1)" id="btn-slide-1" class="nav-btn px-5 py-2 rounded-lg text-xs font-semibold transition text-slate-300">
-                    2. Demografi & Akumulasi
-                </button>
-                <button onclick="goToSlide(2)" id="btn-slide-2" class="nav-btn px-5 py-2 rounded-lg text-xs font-semibold transition text-slate-300">
-                    3. Log Aktivitas Masuk
-                </button>
-            </div>
+    <!-- BAGIAN 1: HEADER -->
+    <header class="text-center w-full max-w-7xl mx-auto pt-6">
+        <!-- Badge Kategori -->
+        <div class="inline-block mb-6">
+            <span class="px-4 py-2 rounded-full border border-emerald-600/50 bg-emerald-950/30 text-emerald-400 text-sm tracking-wide shadow-sm">
+                Bumi Perkemahan & Wisata Alam
+            </span>
         </div>
 
-        <!-- Jendela Slider (Bisa Dislide / Tombol Menu) -->
-        <div class="overflow-hidden w-full relative">
-            <div id="sliderTrack" class="slider-container">
+        <!-- Judul Utama -->
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-wider mb-6 text-white drop-shadow-md">
+            BUPER TALAGA PANCAR
+        </h1>
 
-                <!-- SLIDE 1: Header Utama (Sesuai Gambar 3) -->
-                <div class="slide-item px-2">
-                    <div class="text-center space-y-6 py-12 custom-card rounded-3xl p-8 shadow-2xl">
-                        <div class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider text-emerald-400 bg-emerald-950/60 border border-emerald-800/50 uppercase">
-                            Bumi Perkemahan & Wisata Alam
-                        </div>
-                        <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-white">
-                            BUPER TALAGA PANCAR
-                        </h1>
-                        <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
-                            Sistem Informasi & Dashboard Pemantauan Jumlah Pengunjung Wisata Berbasis Real-time Demografi & Kategori Berkemah
-                        </p>
-                        <div class="flex justify-center gap-3 pt-2">
-                            <span class="bg-slate-800/80 border border-slate-700/60 px-4 py-2 rounded-xl text-xs font-medium text-slate-300">Area Camping Ground</span>
-                            <span class="bg-slate-800/80 border border-slate-700/60 px-4 py-2 rounded-xl text-xs font-medium text-slate-300">Pintu Masuk Utama</span>
-                        </div>
-                        <div class="pt-4">
-                            <button onclick="goToSlide(1)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-2.5 rounded-xl text-xs transition">
-                                Geser ke Statistik Demografi &rarr;
-                            </button>
-                        </div>
-                    </div>
+        <!-- Deskripsi Sistem -->
+        <p class="text-gray-400 text-sm md:text-base leading-relaxed mb-10 max-w-3xl mx-auto">
+            Sistem Informasi & Dashboard Pemantauan Jumlah Pengunjung<br>
+            Wisata Berbasis Real-time Demografi & Kategori Berkemah
+        </p>
+    </header>
+
+    <!-- BAGIAN 2: KARTU DATA PENGUNJUNG -->
+    <main class="w-full max-w-7xl mx-auto flex-grow flex flex-col gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Kartu 1: Pria -->
+            <div class="bg-gray-800/60 p-6 rounded-2xl border border-gray-700/80 flex flex-col justify-between shadow-xl">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-xs font-semibold text-gray-400 tracking-wider uppercase">PENGUNJUNG PRIA</h2>
+                    <div class="w-7 h-7 bg-blue-950 rounded-md border border-blue-800 flex items-center justify-center"></div>
                 </div>
-
-                <!-- SLIDE 2: Demografi & Akumulasi (Sesuai Gambar 1) -->
-                <div class="slide-item px-2">
-                    <div class="space-y-6 custom-card rounded-3xl p-6 md:p-8 shadow-2xl">
-                        <div class="flex justify-between items-center">
-                            <h2 class="text-xl font-bold text-white">Statistik Demografi Pengunjung</h2>
-                            <button onclick="goToSlide(2)" class="text-xs text-emerald-400 hover:underline">Lihat Log Aktivitas &rarr;</button>
-                        </div>
-                        
-                        <!-- Grid 4 Kartu Demografi -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <!-- Pengunjung Pria -->
-                            <div class="bg-[#10172a] p-5 rounded-2xl border border-slate-800 shadow-lg">
-                                <div class="flex justify-between items-start">
-                                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pengunjung Pria</span>
-                                    <div class="w-8 h-8 rounded-lg bg-blue-950/80 border border-blue-800/30 flex items-center justify-center text-blue-400"></div>
-                                </div>
-                                <div class="mt-4">
-                                    <h2 class="text-3xl font-bold text-white tracking-tight">1,420</h2>
-                                    <p class="text-xs text-emerald-400 font-medium mt-1">+12% dari kemarin</p>
-                                </div>
-                            </div>
-
-                            <!-- Pengunjung Wanita -->
-                            <div class="bg-[#10172a] p-5 rounded-2xl border border-slate-800 shadow-lg">
-                                <div class="flex justify-between items-start">
-                                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pengunjung Wanita</span>
-                                    <div class="w-8 h-8 rounded-lg bg-pink-950/80 border border-pink-800/30 flex items-center justify-center text-pink-400"></div>
-                                </div>
-                                <div class="mt-4">
-                                    <h2 class="text-3xl font-bold text-white tracking-tight">1,580</h2>
-                                    <p class="text-xs text-emerald-400 font-medium mt-1">+15% dari kemarin</p>
-                                </div>
-                            </div>
-
-                            <!-- Anak-anak -->
-                            <div class="bg-[#10172a] p-5 rounded-2xl border border-slate-800 shadow-lg">
-                                <div class="flex justify-between items-start">
-                                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Anak-anak</span>
-                                    <div class="w-8 h-8 rounded-lg bg-amber-950/80 border border-amber-800/30 flex items-center justify-center text-amber-400"></div>
-                                </div>
-                                <div class="mt-4">
-                                    <h2 class="text-3xl font-bold text-white tracking-tight">540</h2>
-                                    <p class="text-xs text-emerald-400 font-medium mt-1">+8% dari kemarin</p>
-                                </div>
-                            </div>
-
-                            <!-- Turis Asing -->
-                            <div class="bg-[#10172a] p-5 rounded-2xl border border-slate-800 shadow-lg">
-                                <div class="flex justify-between items-start">
-                                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Turis Asing</span>
-                                    <div class="w-8 h-8 rounded-lg bg-indigo-950/80 border border-indigo-800/30 flex items-center justify-center text-indigo-400"></div>
-                                </div>
-                                <div class="mt-4">
-                                    <h2 class="text-3xl font-bold text-white tracking-tight">215</h2>
-                                    <p class="text-xs text-emerald-400 font-medium mt-1">+20% dari kemarin</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Banner Akumulasi Total -->
-                        <div class="bg-gradient-to-r from-emerald-700 to-emerald-600 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-white">
-                            <div>
-                                <p class="text-xs font-semibold tracking-wider uppercase text-emerald-100">Total Akumulasi Pengunjung Aktif di Lokasi</p>
-                                <p class="text-xs text-emerald-200 mt-0.5">Mencakup area camping ground pinus dan zona api unggun</p>
-                            </div>
-                            <div class="text-2xl md:text-3xl font-bold tracking-tight">
-                                3,755 Orang
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SLIDE 3: Log Aktivitas Masuk (Sesuai Gambar 2) -->
-                <div class="slide-item px-2">
-                    <div class="custom-card rounded-3xl p-6 md:p-8 shadow-2xl space-y-6">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                            <h3 class="text-xl font-bold text-white">Log Aktivitas Masuk Terbaru</h3>
-                            <button class="bg-emerald-950 hover:bg-emerald-900 border border-emerald-800/60 text-emerald-300 text-xs font-semibold px-4 py-2 rounded-lg transition">
-                                Data Loket
-                            </button>
-                        </div>
-
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="border-b border-slate-700/60 text-slate-400 text-xs uppercase tracking-wider font-semibold">
-                                        <th class="py-3 px-4">Waktu Check-in</th>
-                                        <th class="py-3 px-4">Kategori Utama</th>
-                                        <th class="py-3 px-4">Asal Pengunjung</th>
-                                        <th class="py-3 px-4">Jumlah</th>
-                                        <th class="py-3 px-4">Petugas Loket</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-800/60 text-sm text-slate-300">
-                                    <tr class="hover:bg-slate-800/30 transition">
-                                        <td class="py-4 px-4 font-mono text-xs text-slate-400">18:45 WIB</td>
-                                        <td class="py-4 px-4">
-                                            <span class="bg-blue-950/80 border border-blue-800/50 text-blue-300 text-xs px-3 py-1 rounded-full font-medium inline-block">
-                                                Laki-Laki (Grup Camping)
-                                            </span>
-                                        </td>
-                                        <td class="py-4 px-4">Jakarta & Sekitarnya</td>
-                                        <td class="py-4 px-4 font-semibold">6 Orang</td>
-                                        <td class="py-4 px-4 text-slate-400">Rian (Pos 1)</td>
-                                    </tr>
-                                    <tr class="hover:bg-slate-800/30 transition">
-                                        <td class="py-4 px-4 font-mono text-xs text-slate-400">18:30 WIB</td>
-                                        <td class="py-4 px-4">
-                                            <span class="bg-purple-950/80 border border-purple-800/50 text-purple-300 text-xs px-3 py-1 rounded-full font-medium inline-block">
-                                                Turis Asing (Mancanegara)
-                                            </span>
-                                        </td>
-                                        <td class="py-4 px-4">Singapura & Belanda</td>
-                                        <td class="py-4 px-4 font-semibold">4 Orang</td>
-                                        <td class="py-4 px-4 text-slate-400">Siti (Pos Utama)</td>
-                                    </tr>
-                                    <tr class="hover:bg-slate-800/30 transition">
-                                        <td class="py-4 px-4 font-mono text-xs text-slate-400">18:15 WIB</td>
-                                        <td class="py-4 px-4">
-                                            <span class="bg-pink-950/80 border border-pink-800/50 text-pink-300 text-xs px-3 py-1 rounded-full font-medium inline-block">
-                                                Keluarga (Wanita & Anak)
-                                            </span>
-                                        </td>
-                                        <td class="py-4 px-4">Bandung</td>
-                                        <td class="py-4 px-4 font-semibold">5 Orang</td>
-                                        <td class="py-4 px-4 text-slate-400">Rian (Pos 1)</td>
-                                    </tr>
-                                    <tr class="hover:bg-slate-800/30 transition">
-                                        <td class="py-4 px-4 font-mono text-xs text-slate-400">17:55 WIB</td>
-                                        <td class="py-4 px-4">
-                                            <span class="bg-indigo-950/80 border border-indigo-800/50 text-indigo-300 text-xs px-3 py-1 rounded-full font-medium inline-block">
-                                                Laki-Laki & Perempuan
-                                            </span>
-                                        </td>
-                                        <td class="py-4 px-4">Bogor</td>
-                                        <td class="py-4 px-4 font-semibold">8 Orang</td>
-                                        <td class="py-4 px-4 text-slate-400">Siti (Pos Utama)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="pt-2 text-center">
-                            <button onclick="goToSlide(0)" class="text-xs text-emerald-400 hover:underline">&larr; Kembali ke Header Utama</button>
-                        </div>
-                    </div>
-                </div>
-
+                <p class="text-4xl md:text-5xl font-bold text-white mb-3">1,420</p>
+                <p class="text-sm text-emerald-400 font-medium">+12% dari kemarin</p>
             </div>
+
+            <!-- Kartu 2: Wanita -->
+            <div class="bg-gray-800/60 p-6 rounded-2xl border border-gray-700/80 flex flex-col justify-between shadow-xl">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-xs font-semibold text-gray-400 tracking-wider uppercase">PENGUNJUNG WANITA</h2>
+                    <div class="w-7 h-7 bg-pink-950 rounded-md border border-pink-800 flex items-center justify-center"></div>
+                </div>
+                <p class="text-4xl md:text-5xl font-bold text-white mb-3">1,580</p>
+                <p class="text-sm text-emerald-400 font-medium">+15% dari kemarin</p>
+            </div>
+
+            <!-- Kartu 3: Anak-anak -->
+            <div class="bg-gray-800/60 p-6 rounded-2xl border border-gray-700/80 flex flex-col justify-between shadow-xl">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-xs font-semibold text-gray-400 tracking-wider uppercase">ANAK-ANAK</h2>
+                    <div class="w-7 h-7 bg-yellow-950 rounded-md border border-yellow-800 flex items-center justify-center"></div>
+                </div>
+                <p class="text-4xl md:text-5xl font-bold text-white mb-3">540</p>
+                <p class="text-sm text-emerald-400 font-medium">+8% dari kemarin</p>
+            </div>
+
+            <!-- Kartu 4: Turis Asing -->
+            <div class="bg-gray-800/60 p-6 rounded-2xl border border-gray-700/80 flex flex-col justify-between shadow-xl">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-xs font-semibold text-gray-400 tracking-wider uppercase">TURIS ASING</h2>
+                    <div class="w-7 h-7 bg-purple-950 rounded-md border border-purple-800 flex items-center justify-center"></div>
+                </div>
+                <p class="text-4xl md:text-5xl font-bold text-white mb-3">215</p>
+                <p class="text-sm text-emerald-400 font-medium">+20% dari kemarin</p>
+            </div>
+
         </div>
 
-    </div>
+        <!-- BAGIAN 3: TOTAL AKUMULASI PENGUNJUNG -->
+        <div class="bg-emerald-800 p-6 md:p-8 rounded-2xl shadow-2xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border border-emerald-700">
+            <div>
+                <h3 class="text-xs md:text-sm text-emerald-100 font-bold tracking-wider mb-1">TOTAL AKUMULASI PENGUNJUNG AKTIF DI LOKASI</h3>
+                <p class="text-xs md:text-sm text-emerald-200">Mencakup area camping ground pinus dan zona api unggun</p>
+            </div>
+            <p class="text-3xl md:text-4xl font-extrabold text-white whitespace-nowrap">3,755 Orang</p>
+        </div>
 
-    <!-- Footer -->
-    <footer class="text-center text-xs text-slate-500 pt-8">
-        &copy; 2026 Buper Talaga Pancar. Sistem Pemantauan Pengunjung Real-time.
-    </footer>
+        <!-- BAGIAN 4: LOG AKTIVITAS MASUK TERBARU (Sesuai Gambar Terbaru) -->
+        <section class="mt-8">
+            <!-- Header Bagian Log & Tombol Aksi -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <h2 class="text-xl md:text-2xl font-bold text-white tracking-wide">Log Aktivitas Masuk Terbaru</h2>
+                <button class="px-4 py-2 rounded-full border border-emerald-600/50 bg-emerald-950/30 text-emerald-400 text-xs font-semibold tracking-wider hover:bg-emerald-900/40 transition duration-300 w-fit">
+                    Data Loket
+                </button>
+            </div>
 
-    <!-- Skrip Penggerak Slider & Tombol Menu -->
-    <script>
-        function goToSlide(index) {
-            const track = document.getElementById('sliderTrack');
-            track.style.transform = `translateX(-${index * 33.333}%)`;
+            <!-- Tabel Log Aktivitas -->
+            <div class="bg-gray-900/50 border border-gray-800 rounded-2xl overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-gray-800 text-gray-400 text-xs font-semibold tracking-wider">
+                                <th class="py-4 px-6">WAKTU CHECK-IN</th>
+                                <th class="py-4 px-6">KATEGORI UTAMA</th>
+                                <th class="py-4 px-6">ASAL PENGUNJUNG</th>
+                                <th class="py-4 px-6">JUMLAH</th>
+                                <th class="py-4 px-6">PETUGAS LOKET</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800/60 text-sm text-gray-300">
+                            <!-- Baris 1 -->
+                            <tr class="hover:bg-gray-800/30 transition">
+                                <td class="py-4 px-6 font-medium text-white">18:45 WIB</td>
+                                <td class="py-4 px-6">
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-950/80 border border-blue-800 text-blue-300">
+                                        Laki-Laki (Grup Camping)
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6">Jakarta & Sekitarnya</td>
+                                <td class="py-4 px-6">6 Orang</td>
+                                <td class="py-4 px-6 text-gray-400">Rian (Pos 1)</td>
+                            </tr>
+                            <!-- Baris 2 -->
+                            <tr class="hover:bg-gray-800/30 transition">
+                                <td class="py-4 px-6 font-medium text-white">18:30 WIB</td>
+                                <td class="py-4 px-6">
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-purple-950/80 border border-purple-800 text-purple-300">
+                                        Turis Asing (Mancanegara)
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6">Singapura & Belanda</td>
+                                <td class="py-4 px-6">4 Orang</td>
+                                <td class="py-4 px-6 text-gray-400">Siti (Pos Utama)</td>
+                            </tr>
+                            <!-- Baris 3 -->
+                            <tr class="hover:bg-gray-800/30 transition">
+                                <td class="py-4 px-6 font-medium text-white">18:15 WIB</td>
+                                <td class="py-4 px-6">
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-pink-950/80 border border-pink-800 text-pink-300">
+                                        Keluarga (Wanita & Anak)
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6">Bandung</td>
+                                <td class="py-4 px-6">5 Orang</td>
+                                <td class="py-4 px-6 text-gray-400">Rian (Pos 1)</td>
+                            </tr>
+                            <!-- Baris 4 -->
+                            <tr class="hover:bg-gray-800/30 transition">
+                                <td class="py-4 px-6 font-medium text-white">17:55 WIB</td>
+                                <td class="py-4 px-6">
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-indigo-950/80 border border-indigo-800 text-indigo-300">
+                                        Laki-Laki & Perempuan
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6">Bogor</td>
+                                <td class="py-4 px-6">8 Orang</td>
+                                <td class="py-4 px-6 text-gray-400">Siti (Pos Utama)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
 
-            // Perbarui status tombol aktif
-            for (let i = 0; i < 3; i++) {
-                const btn = document.getElementById(`btn-slide-${i}`);
-                if (i === index) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            }
-        }
-    </script>
+    </main>
 
 </body>
 </html>
