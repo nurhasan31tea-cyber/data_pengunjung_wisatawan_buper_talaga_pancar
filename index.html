@@ -47,10 +47,62 @@
                     <button @click="activePeriod = 'mingguan'" :class="activePeriod === 'mingguan' ? 'bg-gray-700 text-white' : 'text-gray-400'" class="px-3 py-1.5 rounded-lg text-xs font-medium transition">Mingguan</button>
                     <button @click="activePeriod = 'bulanan'" :class="activePeriod === 'bulanan' ? 'bg-gray-700 text-white' : 'text-gray-400'" class="px-3 py-1.5 rounded-lg text-xs font-medium transition">Bulanan</button>
                 </div>
-                <!-- Tombol Input Data Terproteksi -->
+                <!-- Tombol Input Data Terproteksi (Kode Rahasia Disembunyikan dari UI) -->
                 <button @click="verifyPin('tambah', null)" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1.5">
                     + Tambah Data
                 </button>
+            </div>
+        </div>
+
+        <!-- RINGKASAN UTAMA: JUMLAH HARIAN & BULANAN -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 p-6 rounded-2xl border border-gray-700 flex justify-between items-center shadow-xl">
+                <div>
+                    <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Total Pengunjung Harian (Hari Ini)</span>
+                    <h3 class="text-3xl font-extrabold text-white mt-1" x-text="summaryData[activeCategory].harian"></h3>
+                    <p class="text-xs text-gray-400 mt-1">Pembaruan data langsung dari gerbang masuk</p>
+                </div>
+                <div class="p-4 bg-emerald-950/40 border border-emerald-800/40 rounded-2xl text-emerald-400 text-2xl">📅</div>
+            </div>
+
+            <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 p-6 rounded-2xl border border-gray-700 flex justify-between items-center shadow-xl">
+                <div>
+                    <span class="text-xs font-semibold text-blue-400 tracking-wider uppercase">Total Pengunjung Bulanan (Bulan Ini)</span>
+                    <h3 class="text-3xl font-extrabold text-white mt-1" x-text="summaryData[activeCategory].bulanan"></h3>
+                    <p class="text-xs text-gray-400 mt-1">Akumulasi total dari minggu ke-1 hingga saat ini</p>
+                </div>
+                <div class="p-4 bg-blue-950/40 border border-blue-800/40 rounded-2xl text-blue-400 text-2xl">📊</div>
+            </div>
+        </div>
+
+        <!-- MENU BARU: TOTAL GABUNGAN HARIAN (CAMPING + WISATA HARIAN) -->
+        <div class="bg-gradient-to-r from-emerald-900/50 via-gray-900 to-gray-900 border border-emerald-600/40 p-6 rounded-2xl shadow-xl space-y-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-gray-800 pb-4">
+                <div>
+                    <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Menu Khusus</span>
+                    <h3 class="text-lg font-bold text-white">Total Gabungan Pengunjung Harian (Camping & Wisata)</h3>
+                </div>
+                <div class="px-4 py-2 bg-emerald-800/60 border border-emerald-600 rounded-xl text-white font-extrabold text-lg w-fit">
+                    Total: <span x-text="combinedDaily.total"></span> Orang
+                </div>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+                <div class="bg-gray-800/50 p-3.5 rounded-xl border border-gray-700/60">
+                    <span class="text-xs text-gray-400 block mb-1">Laki-Laki</span>
+                    <strong class="text-xl text-blue-400" x-text="combinedDaily.pria"></strong>
+                </div>
+                <div class="bg-gray-800/50 p-3.5 rounded-xl border border-gray-700/60">
+                    <span class="text-xs text-gray-400 block mb-1">Wanita</span>
+                    <strong class="text-xl text-pink-400" x-text="combinedDaily.wanita"></strong>
+                </div>
+                <div class="bg-gray-800/50 p-3.5 rounded-xl border border-gray-700/60">
+                    <span class="text-xs text-gray-400 block mb-1">Anak-Anak</span>
+                    <strong class="text-xl text-yellow-400" x-text="combinedDaily.anak"></strong>
+                </div>
+                <div class="bg-gray-800/50 p-3.5 rounded-xl border border-gray-700/60">
+                    <span class="text-xs text-gray-400 block mb-1">Turis Asing</span>
+                    <strong class="text-xl text-purple-400" x-text="combinedDaily.turis"></strong>
+                </div>
             </div>
         </div>
 
@@ -81,7 +133,7 @@
                     <h2 class="text-xs font-semibold text-gray-400 tracking-wider uppercase">PENGUNJUNG PRIA</h2>
                     <div class="w-7 h-7 bg-blue-950 rounded-md border border-blue-800"></div>
                 </div>
-                <p class="text-4xl font-bold text-white mb-3" x-text="stats[activeCategory].pria"></p>
+                <p class="text-4xl font-bold text-white mb-3" x-text="stats[activeCategory][activePeriod].pria"></p>
                 <p class="text-xs text-emerald-400 font-medium">Periode: <span class="uppercase" x-text="activePeriod"></span></p>
             </div>
 
@@ -90,7 +142,7 @@
                     <h2 class="text-xs font-semibold text-gray-400 tracking-wider uppercase">PENGUNJUNG WANITA</h2>
                     <div class="w-7 h-7 bg-pink-950 rounded-md border border-pink-800"></div>
                 </div>
-                <p class="text-4xl font-bold text-white mb-3" x-text="stats[activeCategory].wanita"></p>
+                <p class="text-4xl font-bold text-white mb-3" x-text="stats[activeCategory][activePeriod].wanita"></p>
                 <p class="text-xs text-emerald-400 font-medium">Periode: <span class="uppercase" x-text="activePeriod"></span></p>
             </div>
 
@@ -99,7 +151,7 @@
                     <h2 class="text-xs font-semibold text-gray-400 tracking-wider uppercase">ANAK-ANAK</h2>
                     <div class="w-7 h-7 bg-yellow-950 rounded-md border border-yellow-800"></div>
                 </div>
-                <p class="text-4xl font-bold text-white mb-3" x-text="stats[activeCategory].anak"></p>
+                <p class="text-4xl font-bold text-white mb-3" x-text="stats[activeCategory][activePeriod].anak"></p>
                 <p class="text-xs text-emerald-400 font-medium">Periode: <span class="uppercase" x-text="activePeriod"></span></p>
             </div>
 
@@ -108,25 +160,25 @@
                     <h2 class="text-xs font-semibold text-gray-400 tracking-wider uppercase">TURIS ASING</h2>
                     <div class="w-7 h-7 bg-purple-950 rounded-md border border-purple-800"></div>
                 </div>
-                <p class="text-4xl font-bold text-white mb-3" x-text="stats[activeCategory].turis"></p>
+                <p class="text-4xl font-bold text-white mb-3" x-text="stats[activeCategory][activePeriod].turis"></p>
                 <p class="text-xs text-emerald-400 font-medium">Periode: <span class="uppercase" x-text="activePeriod"></span></p>
             </div>
         </div>
 
-        <!-- BAGIAN 3: TOTAL AKUMULASI PENGUNJUNG -->
+        <!-- BAGIAN 3: TOTAL AKUMULASI PENGUNJUNG BERDASARKAN PERIODE -->
         <div class="bg-emerald-800 p-6 md:p-8 rounded-2xl shadow-2xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border border-emerald-700">
             <div>
-                <h3 class="text-xs md:text-sm text-emerald-100 font-bold tracking-wider mb-1">TOTAL AKUMULASI PENGUNJUNG AKTIF (<span class="uppercase" x-text="activeCategory"></span>)</h3>
+                <h3 class="text-xs md:text-sm text-emerald-100 font-bold tracking-wider mb-1">TOTAL AKUMULASI PENGUNJUNG AKTIF (<span class="uppercase" x-text="activeCategory"></span> - <span class="uppercase" x-text="activePeriod"></span>)</h3>
                 <p class="text-xs md:text-sm text-emerald-200">Data terkalkulasi otomatis berdasarkan filter waktu terpilih</p>
             </div>
-            <p class="text-3xl md:text-4xl font-extrabold text-white whitespace-nowrap" x-text="stats[activeCategory].total"></p>
+            <p class="text-3xl md:text-4xl font-extrabold text-white whitespace-nowrap" x-text="stats[activeCategory][activePeriod].total"></p>
         </div>
 
         <!-- BAGIAN 4: LOG AKTIVITAS & MANAJEMEN DATA -->
         <section class="mt-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <h2 class="text-xl font-bold text-white tracking-wide">Log Aktivitas & Manajemen Data</h2>
-                <span class="text-xs text-gray-400">Ubah/Hapus data memerlukan kode autentikasi</span>
+                <span class="text-xs text-gray-400">Pengelolaan data memerlukan hak akses admin</span>
             </div>
 
             <div class="bg-gray-900/50 border border-gray-800 rounded-2xl overflow-hidden shadow-xl">
@@ -139,7 +191,7 @@
                                 <th class="py-4 px-6">ASAL PENGUNJUNG</th>
                                 <th class="py-4 px-6">JUMLAH</th>
                                 <th class="py-4 px-6">PETUGAS LOKET</th>
-                                <th class="py-4 px-6 text-center">AKSI (KODE 311294)</th>
+                                <th class="py-4 px-6 text-center">AKSI ADMIN</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-800/60 text-sm text-gray-300">
@@ -166,16 +218,16 @@
 
     </main>
 
-    <!-- MODAL POPUP PIN / KODE AKSES -->
+    <!-- MODAL POPUP KODE ADMIN -->
     <div x-show="showPinModal" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50" style="display: none;">
         <div class="bg-gray-900 border border-gray-700 p-6 rounded-2xl w-full max-w-sm shadow-2xl space-y-4">
-            <h3 class="text-lg font-bold text-white">Masukkan Kode Akses</h3>
-            <p class="text-xs text-gray-400">Untuk melakukan <span class="uppercase text-emerald-400 font-bold" x-text="modalAction"></span> data, masukkan kode keamanan (311294):</p>
-            <input type="password" x-model="inputPin" placeholder="Masukkan Kode..." class="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-xl text-white text-center tracking-widest focus:outline-none focus:border-emerald-500">
+            <h3 class="text-lg font-bold text-white">Autentikasi Admin</h3>
+            <p class="text-xs text-gray-400">Masukkan kode akses admin untuk melanjutkan tindakan <span class="uppercase text-emerald-400 font-bold" x-text="modalAction"></span> data:</p>
+            <input type="password" x-model="inputPin" placeholder="Masukkan kode akses..." class="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-xl text-white text-center tracking-widest focus:outline-none focus:border-emerald-500">
             <p x-text="pinError" class="text-xs text-rose-500 text-center" x-show="pinError"></p>
             <div class="flex gap-2 pt-2">
                 <button @click="showPinModal = false; inputPin = ''; pinError = ''" class="flex-1 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl text-xs font-semibold transition">Batal</button>
-                <button @click="submitPin()" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition">Konfirmasi</button>
+                <button @click="submitPin()" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition">Verifikasi</button>
             </div>
         </div>
     </div>
@@ -228,10 +280,33 @@
                 modalAction: '',
                 selectedIndex: null,
                 
-                // Data Sampel Statistik berdasarkan kategori & waktu
+                // Ringkasan Harian dan Bulanan Utama
+                summaryData: {
+                    camping: { harian: '450 Orang', bulanan: '12,450 Orang' },
+                    wisata: { harian: '820 Orang', bulanan: '24,300 Orang' }
+                },
+
+                // Total Gabungan Harian (Camping + Wisata Harian)
+                combinedDaily: {
+                    pria: '600',
+                    wanita: '460',
+                    anak: '160',
+                    turis: '50',
+                    total: '1,270'
+                },
+
+                // Data Demografi Terstruktur Berdasarkan Periode
                 stats: {
-                    camping: { pria: '1,240', wanita: '1,120', anak: '380', turis: '150', total: '2,890 Orang' },
-                    wisata: { pria: '1,420', wanita: '1,580', anak: '540', turis: '215', total: '3,755 Orang' }
+                    camping: {
+                        harian: { pria: '220', wanita: '150', anak: '60', turis: '20', total: '450 Orang' },
+                        mingguan: { pria: '1,540', wanita: '1,200', anak: '450', turis: '130', total: '3,320 Orang' },
+                        bulanan: { pria: '5,800', wanita: '4,650', anak: '1,400', turis: '600', total: '12,450 Orang' }
+                    },
+                    wisata: {
+                        harian: { pria: '380', wanita: '310', anak: '100', turis: '30', total: '820 Orang' },
+                        mingguan: { pria: '2,800', wanita: '2,650', anak: '920', turis: '240', total: '6,610 Orang' },
+                        bulanan: { pria: '11,200', wanita: '10,100', anak: '2,100', turis: '900', total: '24,300 Orang' }
+                    }
                 },
 
                 // Data Log Tabel
@@ -266,7 +341,7 @@
                             this.showFormModal = true;
                         }
                     } else {
-                        this.pinError = 'Kode akses salah! Gunakan 311294';
+                        this.pinError = 'Kode akses salah. Akses ditolak.';
                     }
                 },
 
