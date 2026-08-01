@@ -81,15 +81,18 @@
             </div>
         </div>
 
-        <!-- MENU KHUSUS: GRAFIK & ANALISIS TREN (Harian, Mingguan, Bulanan, Tahunan) -->
+        <!-- MENU KHUSUS: GRAFIK & ANALISIS TREN (DENGAN KETERANGAN TANGGAL/BULAN JELAS) -->
         <div class="bg-gradient-to-r from-emerald-900/50 via-gray-900 to-gray-900 border border-emerald-600/40 p-6 md:p-8 rounded-2xl shadow-xl space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-800 pb-4">
                 <div>
-                    <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Menu Khusus - Visualisasi Tren</span>
-                    <h3 class="text-xl font-bold text-white">Grafik & Rincian Demografi Pengunjung</h3>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Menu Khusus - Visualisasi Tren</span>
+                        <span class="bg-emerald-950 border border-emerald-700 text-emerald-300 text-[10px] px-2.5 py-0.5 rounded-full font-bold" x-text="getDateLabelDescription()"></span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mt-1">Grafik & Rincian Demografi Pengunjung</h3>
                 </div>
                 <!-- Tombol Filter Periode Grafik -->
-                <div class="flex items-center gap-1 bg-gray-900/80 p-1.5 rounded-xl border border-gray-700/80">
+                <div class="flex items-center gap-1 bg-gray-900/80 p-1.5 rounded-xl border border-gray-700/80 flex-wrap">
                     <button @click="chartPeriod = 'harian'" :class="chartPeriod === 'harian' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">Per Hari</button>
                     <button @click="chartPeriod = 'mingguan'" :class="chartPeriod === 'mingguan' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">Per Minggu</button>
                     <button @click="chartPeriod = 'bulanan'" :class="chartPeriod === 'bulanan' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">Per Bulan</button>
@@ -119,9 +122,9 @@
 
             <!-- Simulasi Batang Grafik Interaktif -->
             <div class="space-y-4 pt-2 bg-gray-900/40 p-5 rounded-xl border border-gray-800">
-                <div class="flex justify-between items-center text-xs text-gray-400">
-                    <span>Distribusi Volume Kunjungan (<span class="uppercase text-emerald-400 font-bold" x-text="chartPeriod"></span>)</span>
-                    <span>Total Keseluruhan: <strong class="text-white" x-text="currentChartData.total + ' Orang'"></strong></span>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs text-gray-400 gap-1">
+                    <span>Distribusi Volume Kunjungan untuk Periode: <strong class="text-emerald-400 uppercase" x-text="chartPeriod"></strong></span>
+                    <span>Total Keseluruhan: <strong class="text-white text-sm" x-text="currentChartData.total + ' Orang'"></strong></span>
                 </div>
 
                 <!-- Bar Grafik 1: Pria -->
@@ -356,7 +359,7 @@
                     wisata: { harian: '0', bulanan: '0' }
                 },
 
-                // Data rincian untuk grafik tren khusus (Per Hari, Per Minggu, Per Bulan, Per Tahun)
+                // Data rincian untuk grafik tren khusus
                 chartDataStore: {
                     harian: { pria: 0, wanita: 0, anak: 0, turis: 0, total: 0 },
                     mingguan: { pria: 0, wanita: 0, anak: 0, turis: 0, total: 0 },
@@ -366,6 +369,26 @@
 
                 get currentChartData() {
                     return this.chartDataStore[this.chartPeriod];
+                },
+
+                // Fungsi untuk menampilkan teks keterangan tanggal/bulan secara jelas di menu khusus
+                getDateLabelDescription() {
+                    if (!this.selectedDate) return '';
+                    let dateObj = new Date(this.selectedDate);
+                    let options = { day: 'numeric', month: 'long', year: 'numeric' };
+                    let formattedDate = dateObj.toLocaleDateString('id-ID', options);
+                    let monthName = dateObj.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+
+                    if (this.chartPeriod === 'harian') {
+                        return `Tanggal: ${formattedDate}`;
+                    } else if (this.chartPeriod === 'mingguan') {
+                        return `Minggu Ini (${monthName})`;
+                    } else if (this.chartPeriod === 'bulanan') {
+                        return `Bulan: ${monthName}`;
+                    } else if (this.chartPeriod === 'tahunan') {
+                        return `Tahun: ${dateObj.getFullYear()}`;
+                    }
+                    return '';
                 },
 
                 getPercentage(val, total) {
