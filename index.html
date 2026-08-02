@@ -10,7 +10,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Chart.js Plugin DataLabels untuk menampilkan angka langsung di donat -->
+    <!-- Chart.js Plugin DataLabels -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 </head>
 <body class="bg-[#111827] text-white font-sans min-h-screen p-4 md:p-8 flex flex-col gap-8" x-data="dashboardData()" x-init="initCharts()">
@@ -60,20 +60,20 @@
         <div x-show="activePanel === 'utama'" class="space-y-8">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 bg-gray-800/40 p-4 rounded-2xl border border-gray-800 shadow-lg">
                 <div class="flex items-center gap-2">
-                    <span class="text-xs text-emerald-400 font-semibold">📅 Tanggal Patokan Data:</span>
-                    <input type="date" x-model="selectedDate" class="bg-gray-900 px-3 py-1.5 rounded-xl border border-gray-700 text-xs text-white focus:outline-none cursor-pointer">
+                    <span class="text-xs text-emerald-400 font-semibold">📅 Tanggal Patokan Analisis:</span>
+                    <input type="date" x-model="selectedDate" @change="updateCharts()" class="bg-gray-900 px-3 py-1.5 rounded-xl border border-gray-700 text-xs text-white focus:outline-none cursor-pointer">
                 </div>
                 <button @click="verifyPin('tambah', null)" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1.5">
                     + Tambah Data Pengunjung
                 </button>
             </div>
 
-            <!-- DIAGRAM DONAT (MINGGUAN & BULANAN BERDASARKAN GENDER & KATEGORI) -->
+            <!-- DIAGRAM DONAT (MINGGUAN & BULANAN BERDASARKAN FILTER TANGGAL) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Donat Mingguan -->
                 <div class="bg-gray-800/50 border border-gray-700/80 p-6 rounded-2xl shadow-xl flex flex-col items-center">
-                    <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-2">Diagram Donat Info Mingguan</h3>
-                    <p class="text-xs text-gray-400 mb-4">Distribusi Pengunjung Berdasarkan Gender & Kategori</p>
+                    <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-1">Diagram Donat Info Mingguan</h3>
+                    <p class="text-[11px] text-gray-400 mb-4">(7 Hari Terakhir dari Tanggal Patokan)</p>
                     <div class="w-full max-w-[300px] h-[300px] relative">
                         <canvas id="weeklyDonutChart"></canvas>
                     </div>
@@ -81,8 +81,8 @@
 
                 <!-- Donat Bulanan -->
                 <div class="bg-gray-800/50 border border-gray-700/80 p-6 rounded-2xl shadow-xl flex flex-col items-center">
-                    <h3 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-2">Diagram Donat Info Bulanan</h3>
-                    <p class="text-xs text-gray-400 mb-4">Distribusi Pengunjung Berdasarkan Gender & Kategori</p>
+                    <h3 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-1">Diagram Donat Info Bulanan</h3>
+                    <p class="text-[11px] text-gray-400 mb-4">(Bulan Sesuai Tanggal Patokan)</p>
                     <div class="w-full max-w-[300px] h-[300px] relative">
                         <canvas id="monthlyDonutChart"></canvas>
                     </div>
@@ -96,7 +96,7 @@
                 <div>
                     <span class="text-xs font-semibold text-emerald-400 uppercase">Panel Khusus</span>
                     <h2 class="text-2xl font-extrabold text-white mt-1">Area Camping Ground</h2>
-                    <p class="text-xs text-gray-300 mt-1">Rincian lengkap data demografi dan statistik pengunjung berkemah.</p>
+                    <p class="text-xs text-gray-300 mt-1">Akumulasi keseluruhan data pengunjung berkemah.</p>
                 </div>
                 <div class="text-3xl">🏕️</div>
             </div>
@@ -104,19 +104,19 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
                     <span class="text-xs text-gray-400">👨 Laki-Laki (Camping)</span>
-                    <h4 class="text-2xl font-bold text-blue-400 mt-1" x-text="stats.camping.pria + ' Orang'"></h4>
+                    <h4 class="text-2xl font-bold text-blue-400 mt-1" x-text="totalStats.camping.pria + ' Orang'"></h4>
                 </div>
                 <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
                     <span class="text-xs text-gray-400">👩 Wanita (Camping)</span>
-                    <h4 class="text-2xl font-bold text-pink-400 mt-1" x-text="stats.camping.wanita + ' Orang'"></h4>
+                    <h4 class="text-2xl font-bold text-pink-400 mt-1" x-text="totalStats.camping.wanita + ' Orang'"></h4>
                 </div>
                 <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
                     <span class="text-xs text-gray-400">🧒 Anak-Anak (Camping)</span>
-                    <h4 class="text-2xl font-bold text-yellow-400 mt-1" x-text="stats.camping.anak + ' Orang'"></h4>
+                    <h4 class="text-2xl font-bold text-yellow-400 mt-1" x-text="totalStats.camping.anak + ' Orang'"></h4>
                 </div>
                 <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
                     <span class="text-xs text-gray-400">🌍 Turis Asing (Camping)</span>
-                    <h4 class="text-2xl font-bold text-purple-400 mt-1" x-text="stats.camping.turis + ' Orang'"></h4>
+                    <h4 class="text-2xl font-bold text-purple-400 mt-1" x-text="totalStats.camping.turis + ' Orang'"></h4>
                 </div>
             </div>
         </div>
@@ -127,7 +127,7 @@
                 <div>
                     <span class="text-xs font-semibold text-blue-400 uppercase">Panel Khusus</span>
                     <h2 class="text-2xl font-extrabold text-white mt-1">Wisata Harian (Pintu Masuk Utama)</h2>
-                    <p class="text-xs text-gray-300 mt-1">Rincian lengkap data demografi pengunjung wisata harian.</p>
+                    <p class="text-xs text-gray-300 mt-1">Akumulasi keseluruhan data pengunjung wisata harian.</p>
                 </div>
                 <div class="text-3xl">🌲</div>
             </div>
@@ -135,19 +135,19 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
                     <span class="text-xs text-gray-400">👨 Laki-Laki (Wisata)</span>
-                    <h4 class="text-2xl font-bold text-blue-400 mt-1" x-text="stats.wisata.pria + ' Orang'"></h4>
+                    <h4 class="text-2xl font-bold text-blue-400 mt-1" x-text="totalStats.wisata.pria + ' Orang'"></h4>
                 </div>
                 <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
                     <span class="text-xs text-gray-400">👩 Wanita (Wisata)</span>
-                    <h4 class="text-2xl font-bold text-pink-400 mt-1" x-text="stats.wisata.wanita + ' Orang'"></h4>
+                    <h4 class="text-2xl font-bold text-pink-400 mt-1" x-text="totalStats.wisata.wanita + ' Orang'"></h4>
                 </div>
                 <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
                     <span class="text-xs text-gray-400">🧒 Anak-Anak (Wisata)</span>
-                    <h4 class="text-2xl font-bold text-yellow-400 mt-1" x-text="stats.wisata.anak + ' Orang'"></h4>
+                    <h4 class="text-2xl font-bold text-yellow-400 mt-1" x-text="totalStats.wisata.anak + ' Orang'"></h4>
                 </div>
                 <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
                     <span class="text-xs text-gray-400">🌍 Turis Asing (Wisata)</span>
-                    <h4 class="text-2xl font-bold text-purple-400 mt-1" x-text="stats.wisata.turis + ' Orang'"></h4>
+                    <h4 class="text-2xl font-bold text-purple-400 mt-1" x-text="totalStats.wisata.turis + ' Orang'"></h4>
                 </div>
             </div>
         </div>
@@ -291,7 +291,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT LOGIKA & DIAGRAM DONAT -->
+    <!-- SCRIPT LOGIKA & FILTER TANGGAL DINAMIS -->
     <script>
         function dashboardData() {
             return {
@@ -307,7 +307,6 @@
                 weeklyChartInstance: null,
                 monthlyChartInstance: null,
 
-                // Data dimulai dari NOL agar saat belum diinput, diagram kosong/bersih
                 logs: [],
 
                 formData: { 
@@ -322,7 +321,8 @@
                     petugas: '' 
                 },
 
-                get stats() {
+                // Total keseluruhan untuk panel khusus camping & wisata
+                get totalStats() {
                     let cPria = 0, cWanita = 0, cAnak = 0, cTuris = 0;
                     let wPria = 0, wWanita = 0, wAnak = 0, wTuris = 0;
 
@@ -346,10 +346,47 @@
                     };
                 },
 
+                // Kalkulasi Mingguan (7 Hari terakhir dari selectedDate)
+                get weeklyStats() {
+                    let cP = 0, cW = 0, wP = 0, wW = 0;
+                    let targetDate = new Date(this.selectedDate);
+                    let sevenDaysAgo = new Date(targetDate);
+                    sevenDaysAgo.setDate(targetDate.getDate() - 7);
+
+                    this.logs.forEach(item => {
+                        let itemDate = new Date(item.tanggal);
+                        if (itemDate >= sevenDaysAgo && itemDate <= targetDate) {
+                            let p = parseInt(item.pria) || 0;
+                            let w = parseInt(item.wanita) || 0;
+                            if (item.isCamping) { cP += p; cW += w; }
+                            if (item.isWisata) { wP += p; wW += w; }
+                        }
+                    });
+                    return [cP, cW, wP, wW];
+                },
+
+                // Kalkulasi Bulanan (Bulan dan Tahun sama dengan selectedDate)
+                get monthlyStats() {
+                    let cP = 0, cW = 0, wP = 0, wW = 0;
+                    let targetDate = new Date(this.selectedDate);
+                    let targetMonth = targetDate.getMonth();
+                    let targetYear = targetDate.getFullYear();
+
+                    this.logs.forEach(item => {
+                        let itemDate = new Date(item.tanggal);
+                        if (itemDate.getMonth() === targetMonth && itemDate.getFullYear() === targetYear) {
+                            let p = parseInt(item.pria) || 0;
+                            let w = parseInt(item.wanita) || 0;
+                            if (item.isCamping) { cP += p; cW += w; }
+                            if (item.isWisata) { wP += p; wW += w; }
+                        }
+                    });
+                    return [cP, cW, wP, wW];
+                },
+
                 initCharts() {
                     Chart.register(ChartDataLabels);
 
-                    // Konfigurasi umum untuk diagram donat dengan plugin label angka langsung
                     const commonOptions = {
                         responsive: true,
                         maintainAspectRatio: false,
@@ -362,7 +399,7 @@
                                 color: '#ffffff',
                                 font: { weight: 'bold', size: 11 },
                                 formatter: (value, ctx) => {
-                                    if (value === 0) return ''; // Sembunyikan label jika angkanya 0
+                                    if (value === 0) return '';
                                     let label = ctx.chart.data.labels[ctx.dataIndex];
                                     return `${label}\n(${value})`;
                                 },
@@ -371,7 +408,6 @@
                         }
                     };
 
-                    // Donat Mingguan (Berdasarkan Gender & Kategori)
                     const ctxWeekly = document.getElementById('weeklyDonutChart').getContext('2d');
                     this.weeklyChartInstance = new Chart(ctxWeekly, {
                         type: 'doughnut',
@@ -386,7 +422,6 @@
                         options: commonOptions
                     });
 
-                    // Donat Bulanan (Berdasarkan Gender & Kategori)
                     const ctxMonthly = document.getElementById('monthlyDonutChart').getContext('2d');
                     this.monthlyChartInstance = new Chart(ctxMonthly, {
                         type: 'doughnut',
@@ -405,15 +440,11 @@
                 },
 
                 updateCharts() {
-                    let s = this.stats;
-                    let weeklyData = [s.camping.pria, s.camping.wanita, s.wisata.pria, s.wisata.wanita];
-                    let monthlyData = [s.camping.pria * 4, s.camping.wanita * 4, s.wisata.pria * 4, s.wisata.wanita * 4]; // Simulasi kelipatan mingguan ke bulanan
-
                     if (this.weeklyChartInstance && this.monthlyChartInstance) {
-                        this.weeklyChartInstance.data.datasets[0].data = weeklyData;
+                        this.weeklyChartInstance.data.datasets[0].data = this.weeklyStats;
                         this.weeklyChartInstance.update();
 
-                        this.monthlyChartInstance.data.datasets[0].data = monthlyData;
+                        this.monthlyChartInstance.data.datasets[0].data = this.monthlyStats;
                         this.monthlyChartInstance.update();
                     }
                 },
