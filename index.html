@@ -293,8 +293,7 @@
 
     <!-- SCRIPT LOGIKA & SHEETDB API INTEGRATION -->
     <script>
-        // ⚠️ Ganti URL di bawah ini dengan API URL yang Anda dapatkan dari SheetDB.io
-        const SHEETDB_API_URL = 'GANTI_DENGAN_URL_API_SHEETDB_ANDA';
+        const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/z96cgokflvchx';
 
         function dashboardData() {
             return {
@@ -329,19 +328,17 @@
                     this.fetchDataFromSheet();
                 },
 
-                // Ambil data dari Google Sheets via SheetDB
                 async fetchDataFromSheet() {
                     try {
                         let response = await fetch(SHEETDB_API_URL);
                         let data = await response.json();
-                        this.logs = data.reverse(); // Data terbaru di atas
+                        this.logs = data.reverse();
                         this.updateCharts();
                     } catch (error) {
                         console.error('Gagal memuat data dari SheetDB:', error);
                     }
                 },
 
-                // Total keseluruhan untuk panel khusus camping & wisata
                 get totalStats() {
                     let cPria = 0, cWanita = 0, cAnak = 0, cTuris = 0;
                     let wPria = 0, wWanita = 0, wAnak = 0, wTuris = 0;
@@ -368,7 +365,6 @@
                     };
                 },
 
-                // Kalkulasi Mingguan (7 Hari terakhir dari selectedDate)
                 get weeklyStats() {
                     let cP = 0, cW = 0, wP = 0, wW = 0;
                     let targetDate = new Date(this.selectedDate);
@@ -390,7 +386,6 @@
                     return [cP, cW, wP, wW];
                 },
 
-                // Kalkulasi Bulanan (Bulan dan Tahun sama dengan selectedDate)
                 get monthlyStats() {
                     let cP = 0, cW = 0, wP = 0, wW = 0;
                     let targetDate = new Date(this.selectedDate);
@@ -528,7 +523,6 @@
                         }
                     } else if (this.modalAction === 'ubah') {
                         let originalItem = this.logs[this.selectedIndex];
-                        // SheetDB menggunakan kolom tanggal sebagai acuan update jika id tidak ada, atau menggunakan query string
                         try {
                             await fetch(`${SHEETDB_API_URL}/tanggal/${originalItem.tanggal}`, {
                                 method: 'PUT',
