@@ -332,7 +332,8 @@
                     try {
                         let response = await fetch(SHEETDB_API_URL);
                         let data = await response.json();
-                        this.logs = data.reverse();
+                        // Simpan data beserta nomor baris aslinya (index baris di Sheets mulai dari baris ke-2)
+                        this.logs = data.map((item, idx) => ({ ...item, _rowIndex: idx + 2 })).reverse();
                         this.updateCharts();
                     } catch (error) {
                         console.error('Gagal memuat data dari SheetDB:', error);
@@ -377,11 +378,15 @@
                 get weeklyStats() {
                     let cP = 0, cW = 0, wP = 0, wW = 0;
                     let targetDate = new Date(this.selectedDate);
+                    targetDate.setHours(0, 0, 0, 0);
                     let sevenDaysAgo = new Date(targetDate);
                     sevenDaysAgo.setDate(targetDate.getDate() - 7);
 
                     this.logs.forEach(item => {
+                        if (!item.tanggal) return;
                         let itemDate = new Date(item.tanggal);
+                        itemDate.setHours(0, 0, 0, 0);
+                        
                         if (itemDate >= sevenDaysAgo && itemDate <= targetDate) {
                             let p = parseInt(item.pria) || 0;
                             let w = parseInt(item.wanita) || 0;
@@ -402,7 +407,9 @@
                     let targetYear = targetDate.getFullYear();
 
                     this.logs.forEach(item => {
+                        if (!item.tanggal) return;
                         let itemDate = new Date(item.tanggal);
+                        
                         if (itemDate.getMonth() === targetMonth && itemDate.getFullYear() === targetYear) {
                             let p = parseInt(item.pria) || 0;
                             let w = parseInt(item.wanita) || 0;
@@ -533,7 +540,8 @@
                     } else if (this.modalAction === 'ubah') {
                         let originalItem = this.logs[this.selectedIndex];
                         try {
-                            await fetch(`${SHEETDB_API_URL}/tanggal/${originalItem.tanggal}`, {
+                            // Menggunakan spesifikasi baris row index agar akurat di semua perangkat
+                            await fetch(`${SHEETDB_API_URL}/row/${originalItem._rowIndex}`, {
                                 method: 'PUT',
                                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ data: this.formData })
@@ -547,7 +555,8 @@
 
                 async deleteDataFromSheet(item) {
                     try {
-                        await fetch(`${SHEETDB_API_URL}/tanggal/${item.tanggal}`, {
+                        // Menggunakan spesifikasi baris row index agar akurat di semua perangkat
+                        await fetch(`${SHEETDB_API_URL}/row/${item._rowIndex}`, {
                             method: 'DELETE'
                         });
                         this.fetchDataFromSheet();
