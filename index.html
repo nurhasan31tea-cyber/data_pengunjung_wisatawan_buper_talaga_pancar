@@ -68,7 +68,7 @@
                 </button>
             </div>
 
-            <!-- DIAGRAM DONAT (MINGGUAN & BULANAN BERDASARKAN FILTER TANGGAL) -->
+            <!-- DIAGRAM DONAT -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Donat Mingguan -->
                 <div class="bg-gray-800/50 border border-gray-700/80 p-6 rounded-2xl shadow-xl flex flex-col items-center">
@@ -189,10 +189,10 @@
                                     <td class="py-4 px-6 font-medium text-white" x-text="item.tanggal"></td>
                                     <td class="py-4 px-6">
                                         <div class="flex gap-1 flex-wrap">
-                                            <template x-if="String(item.isCamping).toLowerCase() === 'true'">
+                                            <template x-if="checkStatus(item.isCamping)">
                                                 <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-950/80 border border-emerald-800 text-emerald-300">Camping</span>
                                             </template>
-                                            <template x-if="String(item.isWisata).toLowerCase() === 'true'">
+                                            <template x-if="checkStatus(item.isWisata)">
                                                 <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-blue-950/80 border border-blue-800 text-blue-300">Wisata Harian</span>
                                             </template>
                                         </div>
@@ -339,6 +339,15 @@
                     }
                 },
 
+                checkStatus(val) {
+                    if (typeof val === 'boolean') return val;
+                    if (typeof val === 'string') {
+                        let lower = val.toLowerCase().trim();
+                        return lower === 'true' || lower === '1' || lower === 'yes';
+                    }
+                    return Boolean(val);
+                },
+
                 get totalStats() {
                     let cPria = 0, cWanita = 0, cAnak = 0, cTuris = 0;
                     let wPria = 0, wWanita = 0, wAnak = 0, wTuris = 0;
@@ -348,8 +357,8 @@
                         let w = parseInt(item.wanita) || 0;
                         let a = parseInt(item.anak) || 0;
                         let t = parseInt(item.turis) || 0;
-                        let isCamp = String(item.isCamping).toLowerCase() === 'true';
-                        let isWis = String(item.isWisata).toLowerCase() === 'true';
+                        let isCamp = this.checkStatus(item.isCamping);
+                        let isWis = this.checkStatus(item.isWisata);
 
                         if(isCamp) {
                             cPria += p; cWanita += w; cAnak += a; cTuris += t;
@@ -376,8 +385,8 @@
                         if (itemDate >= sevenDaysAgo && itemDate <= targetDate) {
                             let p = parseInt(item.pria) || 0;
                             let w = parseInt(item.wanita) || 0;
-                            let isCamp = String(item.isCamping).toLowerCase() === 'true';
-                            let isWis = String(item.isWisata).toLowerCase() === 'true';
+                            let isCamp = this.checkStatus(item.isCamping);
+                            let isWis = this.checkStatus(item.isWisata);
 
                             if (isCamp) { cP += p; cW += w; }
                             if (isWis) { wP += p; wW += w; }
@@ -397,8 +406,8 @@
                         if (itemDate.getMonth() === targetMonth && itemDate.getFullYear() === targetYear) {
                             let p = parseInt(item.pria) || 0;
                             let w = parseInt(item.wanita) || 0;
-                            let isCamp = String(item.isCamping).toLowerCase() === 'true';
-                            let isWis = String(item.isWisata).toLowerCase() === 'true';
+                            let isCamp = this.checkStatus(item.isCamping);
+                            let isWis = this.checkStatus(item.isWisata);
 
                             if (isCamp) { cP += p; cW += w; }
                             if (isWis) { wP += p; wW += w; }
