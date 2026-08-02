@@ -13,7 +13,7 @@
     <!-- Chart.js Plugin DataLabels -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 </head>
-<body class="bg-[#111827] text-white font-sans min-h-screen p-4 md:p-8 flex flex-col gap-8" x-data="dashboardData()" x-init="initCharts()">
+<body class="bg-[#111827] text-white font-sans min-h-screen p-4 md:p-8 flex flex-col gap-8" x-data="dashboardData()" x-init="initApp()">
 
     <!-- BAGIAN 1: HERO SECTION -->
     <header class="w-full max-w-7xl mx-auto py-12 px-6 bg-gradient-to-b from-[#1a2333] to-[#111827] rounded-3xl border border-gray-800 text-center flex flex-col items-center justify-center gap-6 shadow-2xl">
@@ -181,7 +181,7 @@
                         <tbody class="divide-y divide-gray-800/60 text-sm text-gray-300">
                             <template x-if="logs.length === 0">
                                 <tr>
-                                    <td colspan="7" class="py-8 text-center text-gray-500 text-xs">Belum ada data log aktivitas masuk. Silakan tambah data baru.</td>
+                                    <td colspan="7" class="py-8 text-center text-gray-500 text-xs">Memuat data dari Google Sheets...</td>
                                 </tr>
                             </template>
                             <template x-for="(item, index) in logs" :key="index">
@@ -189,10 +189,10 @@
                                     <td class="py-4 px-6 font-medium text-white" x-text="item.tanggal"></td>
                                     <td class="py-4 px-6">
                                         <div class="flex gap-1 flex-wrap">
-                                            <template x-if="item.isCamping">
+                                            <template x-if="String(item.isCamping).toLowerCase() === 'true'">
                                                 <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-950/80 border border-emerald-800 text-emerald-300">Camping</span>
                                             </template>
-                                            <template x-if="item.isWisata">
+                                            <template x-if="String(item.isWisata).toLowerCase() === 'true'">
                                                 <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-blue-950/80 border border-blue-800 text-blue-300">Wisata Harian</span>
                                             </template>
                                         </div>
@@ -291,8 +291,11 @@
         </div>
     </div>
 
-    <!-- SCRIPT LOGIKA & FILTER TANGGAL DINAMIS -->
+    <!-- SCRIPT LOGIKA & SHEETDB API INTEGRATION -->
     <script>
+        // ⚠️ Ganti URL di bawah ini dengan API URL yang Anda dapatkan dari SheetDB.io
+        const SHEETDB_API_URL = 'GANTI_DENGAN_URL_API_SHEETDB_ANDA';
+
         function dashboardData() {
             return {
                 activePanel: 'utama',
@@ -321,6 +324,23 @@
                     petugas: '' 
                 },
 
+                initApp() {
+                    this.initCharts();
+                    this.fetchDataFromSheet();
+                },
+
+                // Ambil data dari Google Sheets via SheetDB
+                async fetchDataFromSheet() {
+                    try {
+                        let response = await fetch(SHEETDB_API_URL);
+                        let data = await response.json();
+                        this.logs = data.reverse(); // Data terbaru di atas
+                        this.updateCharts();
+                    } catch (error) {
+                        console.error('Gagal memuat data dari SheetDB:', error);
+                    }
+                },
+
                 // Total keseluruhan untuk panel khusus camping & wisata
                 get totalStats() {
                     let cPria = 0, cWanita = 0, cAnak = 0, cTuris = 0;
@@ -331,11 +351,13 @@
                         let w = parseInt(item.wanita) || 0;
                         let a = parseInt(item.anak) || 0;
                         let t = parseInt(item.turis) || 0;
+                        let isCamp = String(item.isCamping).toLowerCase() === 'true';
+                        let isWis = String(item.isWisata).toLowerCase() === 'true';
 
-                        if(item.isCamping) {
+                        if(isCamp) {
                             cPria += p; cWanita += w; cAnak += a; cTuris += t;
                         }
-                        if(item.isWisata) {
+                        if(isWis) {
                             wPria += p; wWanita += w; wAnak += a; wTuris += t;
                         }
                     });
@@ -358,8 +380,11 @@
                         if (itemDate >= sevenDaysAgo && itemDate <= targetDate) {
                             let p = parseInt(item.pria) || 0;
                             let w = parseInt(item.wanita) || 0;
-                            if (item.isCamping) { cP += p; cW += w; }
-                            if (item.isWisata) { wP += p; wW += w; }
+                            let isCamp = String(item.isCamping).toLowerCase() === 'true';
+                            let isWis = String(item.isWisata).toLowerCase() === 'true';
+
+                            if (isCamp) { cP += p; cW += w; }
+                            if (isWis) { wP += p; wW += w; }
                         }
                     });
                     return [cP, cW, wP, wW];
@@ -377,8 +402,11 @@
                         if (itemDate.getMonth() === targetMonth && itemDate.getFullYear() === targetYear) {
                             let p = parseInt(item.pria) || 0;
                             let w = parseInt(item.wanita) || 0;
-                            if (item.isCamping) { cP += p; cW += w; }
-                            if (item.isWisata) { wP += p; wW += w; }
+                            let isCamp = String(item.isCamping).toLowerCase() === 'true';
+                            let isWis = String(item.isWisata).toLowerCase() === 'true';
+
+                            if (isCamp) { cP += p; cW += w; }
+                            if (isWis) { wP += p; wW += w; }
                         }
                     });
                     return [cP, cW, wP, wW];
@@ -435,8 +463,6 @@
                         },
                         options: commonOptions
                     });
-
-                    this.updateCharts();
                 },
 
                 updateCharts() {
@@ -461,8 +487,8 @@
                     if (this.inputPin === '311294') {
                         this.showPinModal = false;
                         if (this.modalAction === 'hapus') {
-                            this.logs.splice(this.selectedIndex, 1);
-                            this.updateCharts();
+                            let targetItem = this.logs[this.selectedIndex];
+                            this.deleteDataFromSheet(targetItem);
                         } else if (this.modalAction === 'tambah') {
                             this.formData = { 
                                 tanggal: this.selectedDate, 
@@ -486,14 +512,45 @@
                     }
                 },
 
-                saveData() {
-                    if (this.modalAction === 'tambah') {
-                        this.logs.unshift({ ...this.formData });
-                    } else if (this.modalAction === 'ubah') {
-                        this.logs[this.selectedIndex] = { ...this.formData };
-                    }
+                async saveData() {
                     this.showFormModal = false;
-                    this.updateCharts();
+                    
+                    if (this.modalAction === 'tambah') {
+                        try {
+                            await fetch(SHEETDB_API_URL, {
+                                method: 'POST',
+                                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ data: [this.formData] })
+                            });
+                            this.fetchDataFromSheet();
+                        } catch (error) {
+                            console.error('Gagal menambah data ke SheetDB:', error);
+                        }
+                    } else if (this.modalAction === 'ubah') {
+                        let originalItem = this.logs[this.selectedIndex];
+                        // SheetDB menggunakan kolom tanggal sebagai acuan update jika id tidak ada, atau menggunakan query string
+                        try {
+                            await fetch(`${SHEETDB_API_URL}/tanggal/${originalItem.tanggal}`, {
+                                method: 'PUT',
+                                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ data: this.formData })
+                            });
+                            this.fetchDataFromSheet();
+                        } catch (error) {
+                            console.error('Gagal mengubah data di SheetDB:', error);
+                        }
+                    }
+                },
+
+                async deleteDataFromSheet(item) {
+                    try {
+                        await fetch(`${SHEETDB_API_URL}/tanggal/${item.tanggal}`, {
+                            method: 'DELETE'
+                        });
+                        this.fetchDataFromSheet();
+                    } catch (error) {
+                        console.error('Gagal menghapus data dari SheetDB:', error);
+                    }
                 }
             }
         }
