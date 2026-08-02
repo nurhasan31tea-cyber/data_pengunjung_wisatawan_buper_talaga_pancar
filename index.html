@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
     <title>Dashboard Buper Talaga Pancar</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,77 +13,75 @@
     <!-- Chart.js Plugin DataLabels -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 </head>
-<body class="bg-[#111827] text-white font-sans min-h-screen p-3 md:p-8 flex flex-col gap-6 md:gap-8 overflow-x-hidden" x-data="dashboardData()" x-init="initApp()">
+<body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen p-3 md:p-8 flex flex-col gap-6" x-data="dashboardData()" x-init="initApp()">
 
     <!-- BAGIAN 1: HERO SECTION -->
-    <header class="w-full max-w-7xl mx-auto py-8 md:py-12 px-4 md:px-6 bg-gradient-to-b from-[#1a2333] to-[#111827] rounded-3xl border border-gray-800 text-center flex flex-col items-center justify-center gap-4 md:gap-6 shadow-2xl">
-        <div class="inline-block">
-            <span class="px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-emerald-600/50 bg-emerald-950/35 text-emerald-400 text-[11px] md:text-sm tracking-wide shadow-sm font-medium">
-                Bumi Perkemahan & Wisata Alam
-            </span>
-        </div>
-        <h1 class="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-wider text-white drop-shadow-md">
+    <header class="w-full max-w-7xl mx-auto py-6 md:py-10 px-4 bg-gradient-to-b from-[#161f30] to-[#0b0f19] rounded-2xl border border-gray-800 text-center flex flex-col items-center justify-center gap-4 shadow-xl">
+        <span class="px-3 py-1 rounded-full border border-emerald-500/40 bg-emerald-950/50 text-emerald-300 text-[11px] md:text-xs tracking-wide font-medium">
+            Bumi Perkemahan & Wisata Alam
+        </span>
+        <h1 class="text-xl sm:text-2xl md:text-4xl font-extrabold tracking-wider text-white">
             BUPER TALAGA PANCAR
         </h1>
-        <p class="text-gray-300 text-xs md:text-sm leading-relaxed max-w-2xl mx-auto px-2">
+        <p class="text-gray-300 text-xs leading-relaxed max-w-xl mx-auto px-1">
             Sistem Informasi & Dashboard Pemantauan Jumlah Pengunjung Wisata Berbasis Real-time Demografi & Kategori Berkemah
         </p>
-        <div class="flex items-center justify-center gap-2 md:gap-3 flex-wrap mt-2">
-            <button @click="activePanel = 'camping'" class="px-4 py-2 md:px-5 md:py-2.5 rounded-xl bg-gray-800/80 border border-gray-700 hover:bg-emerald-700 hover:border-emerald-600 text-xs font-semibold transition shadow">
-                🏕️ Area Camping Ground
+        <div class="flex items-center justify-center gap-2 flex-wrap">
+            <button @click="activePanel = 'camping'" class="px-3.5 py-2 rounded-xl bg-gray-800 border border-gray-700 hover:bg-emerald-600 text-xs font-semibold transition">
+                🏕️ Area Camping
             </button>
-            <button @click="activePanel = 'wisata'" class="px-4 py-2 md:px-5 md:py-2.5 rounded-xl bg-gray-800/80 border border-gray-700 hover:bg-emerald-700 hover:border-emerald-600 text-xs font-semibold transition shadow">
-                🌲 Pintu Masuk Utama
+            <button @click="activePanel = 'wisata'" class="px-3.5 py-2 rounded-xl bg-gray-800 border border-gray-700 hover:bg-emerald-600 text-xs font-semibold transition">
+                🌲 Pintu Masuk
             </button>
         </div>
     </header>
 
     <!-- NAVIGASI PANEL UTAMA -->
-    <nav class="w-full max-w-7xl mx-auto flex justify-center border-b border-gray-800 pb-4 gap-1.5 md:gap-2 flex-wrap">
-        <button @click="activePanel = 'utama'" :class="activePanel === 'utama' ? 'bg-emerald-600 text-white font-bold shadow' : 'bg-gray-800/60 text-gray-400 hover:text-white'" class="px-3 py-2 md:px-4 md:py-2 rounded-xl text-[11px] md:text-xs transition">
-            🏠 Dashboard Utama
+    <nav class="w-full max-w-7xl mx-auto flex justify-center border-b border-gray-800 pb-3 gap-1.5 flex-wrap">
+        <button @click="activePanel = 'utama'" :class="activePanel === 'utama' ? 'bg-emerald-600 text-white font-bold shadow' : 'bg-gray-800 text-gray-400 hover:text-white'" class="px-3 py-2 rounded-xl text-xs transition">
+            🏠 Utama
         </button>
-        <button @click="activePanel = 'camping'" :class="activePanel === 'camping' ? 'bg-emerald-600 text-white font-bold shadow' : 'bg-gray-800/60 text-gray-400 hover:text-white'" class="px-3 py-2 md:px-4 md:py-2 rounded-xl text-[11px] md:text-xs transition">
+        <button @click="activePanel = 'camping'" :class="activePanel === 'camping' ? 'bg-emerald-600 text-white font-bold shadow' : 'bg-gray-800 text-gray-400 hover:text-white'" class="px-3 py-2 rounded-xl text-xs transition">
             🏕️ Camping
         </button>
-        <button @click="activePanel = 'wisata'" :class="activePanel === 'wisata' ? 'bg-emerald-600 text-white font-bold shadow' : 'bg-gray-800/60 text-gray-400 hover:text-white'" class="px-3 py-2 md:px-4 md:py-2 rounded-xl text-[11px] md:text-xs transition">
-            🌲 Wisata Harian
+        <button @click="activePanel = 'wisata'" :class="activePanel === 'wisata' ? 'bg-emerald-600 text-white font-bold shadow' : 'bg-gray-800 text-gray-400 hover:text-white'" class="px-3 py-2 rounded-xl text-xs transition">
+            🌲 Wisata
         </button>
-        <button @click="activePanel = 'log'" :class="activePanel === 'log' ? 'bg-emerald-600 text-white font-bold shadow' : 'bg-gray-800/60 text-gray-400 hover:text-white'" class="px-3 py-2 md:px-4 md:py-2 rounded-xl text-[11px] md:text-xs transition">
-            📋 Log & Data
+        <button @click="activePanel = 'log'" :class="activePanel === 'log' ? 'bg-emerald-600 text-white font-bold shadow' : 'bg-gray-800 text-gray-400 hover:text-white'" class="px-3 py-2 rounded-xl text-xs transition">
+            📋 Log Data
         </button>
     </nav>
 
-    <main class="w-full max-w-7xl mx-auto flex-grow flex flex-col gap-8">
+    <main class="w-full max-w-7xl mx-auto flex-grow flex flex-col gap-6">
 
         <!-- ================= PANEL 1: DASHBOARD UTAMA & DIAGRAM DONAT ================= -->
-        <div x-show="activePanel === 'utama'" class="space-y-8">
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-800/40 p-4 rounded-2xl border border-gray-800 shadow-lg">
-                <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
-                    <span class="text-xs text-emerald-400 font-semibold">📅 Tanggal Patokan:</span>
-                    <input type="date" x-model="selectedDate" @change="updateCharts()" class="bg-gray-900 px-3 py-1.5 rounded-xl border border-gray-700 text-xs text-white focus:outline-none cursor-pointer">
+        <div x-show="activePanel === 'utama'" class="space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-3 bg-gray-900/80 p-3.5 rounded-xl border border-gray-800">
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-between">
+                    <span class="text-xs text-emerald-400 font-medium">Tanggal:</span>
+                    <input type="date" x-model="selectedDate" @change="updateCharts()" class="bg-gray-800 px-3 py-1.5 rounded-lg border border-gray-700 text-xs text-white focus:outline-none">
                 </div>
-                <button @click="verifyPin('tambah', null)" class="w-full sm:w-auto px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center justify-center gap-1.5">
-                    + Tambah Data Pengunjung
+                <button @click="verifyPin('tambah', null)" class="w-full sm:w-auto px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1">
+                    + Tambah Data
                 </button>
             </div>
 
-            <!-- DIAGRAM DONAT -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- PERBAIKAN UTAMA: grid-cols-1 agar di HP potret tersusun vertikal ke bawah dengan lebar penuh -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                 <!-- Donat Mingguan -->
-                <div class="bg-gray-800/50 border border-gray-700/80 p-4 md:p-6 rounded-2xl shadow-xl flex flex-col items-center">
-                    <h3 class="text-xs md:text-sm font-bold text-emerald-400 uppercase tracking-wider mb-1 text-center">Diagram Donat Info Mingguan</h3>
-                    <p class="text-[10px] md:text-[11px] text-gray-400 mb-4 text-center">(7 Hari Terakhir dari Tanggal Patokan)</p>
-                    <div style="width: 100%; max-width: 280px; height: 280px; position: relative;">
+                <div class="bg-gray-900/90 border border-gray-800 p-4 rounded-2xl shadow-lg flex flex-col items-center">
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-0.5 text-center">Diagram Donat Info Mingguan</h3>
+                    <p class="text-[10px] text-gray-400 mb-3 text-center">(7 Hari Terakhir dari Tanggal Patokan)</p>
+                    <div class="w-full" style="height: 260px; position: relative;">
                         <canvas id="weeklyDonutChart"></canvas>
                     </div>
                 </div>
 
                 <!-- Donat Bulanan -->
-                <div class="bg-gray-800/50 border border-gray-700/80 p-4 md:p-6 rounded-2xl shadow-xl flex flex-col items-center">
-                    <h3 class="text-xs md:text-sm font-bold text-blue-400 uppercase tracking-wider mb-1 text-center">Diagram Donat Info Bulanan</h3>
-                    <p class="text-[10px] md:text-[11px] text-gray-400 mb-4 text-center">(Bulan Sesuai Tanggal Patokan)</p>
-                    <div style="width: 100%; max-width: 280px; height: 280px; position: relative;">
+                <div class="bg-gray-900/90 border border-gray-800 p-4 rounded-2xl shadow-lg flex flex-col items-center">
+                    <h3 class="text-xs font-bold text-blue-400 uppercase tracking-wider mb-0.5 text-center">Diagram Donat Info Bulanan</h3>
+                    <p class="text-[10px] text-gray-400 mb-3 text-center">(Bulan Sesuai Tanggal Patokan)</p>
+                    <div class="w-full" style="height: 260px; position: relative;">
                         <canvas id="monthlyDonutChart"></canvas>
                     </div>
                 </div>
@@ -91,120 +89,117 @@
         </div>
 
         <!-- ================= PANEL 2: PANEL KHUSUS CAMPING ================= -->
-        <div x-show="activePanel === 'camping'" class="space-y-6" style="display: none;">
-            <div class="bg-emerald-950/40 border border-emerald-800/50 p-5 md:p-6 rounded-2xl flex justify-between items-center shadow-xl">
+        <div x-show="activePanel === 'camping'" class="space-y-4" style="display: none;">
+            <div class="bg-emerald-950/30 border border-emerald-800/40 p-4 rounded-xl flex justify-between items-center">
                 <div>
-                    <span class="text-xs font-semibold text-emerald-400 uppercase">Panel Khusus</span>
-                    <h2 class="text-xl md:text-2xl font-extrabold text-white mt-1">Area Camping Ground</h2>
-                    <p class="text-xs text-gray-300 mt-1">Akumulasi keseluruhan data pengunjung berkemah.</p>
+                    <span class="text-[11px] font-semibold text-emerald-400 uppercase">Panel Khusus</span>
+                    <h2 class="text-lg font-bold text-white">Area Camping Ground</h2>
                 </div>
-                <div class="text-2xl md:text-3xl">🏕️</div>
+                <div class="text-2xl">🏕️</div>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
-                    <span class="text-xs text-gray-400">👨 Laki-Laki (Camping)</span>
-                    <h4 class="text-2xl font-bold text-blue-400 mt-1" x-text="totalStats.camping.pria + ' Orang'"></h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
+                    <span class="text-xs text-gray-400">👨 Laki-Laki</span>
+                    <h4 class="text-xl font-bold text-blue-400 mt-1" x-text="totalStats.camping.pria + ' Orang'"></h4>
                 </div>
-                <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
-                    <span class="text-xs text-gray-400">👩 Wanita (Camping)</span>
-                    <h4 class="text-2xl font-bold text-pink-400 mt-1" x-text="totalStats.camping.wanita + ' Orang'"></h4>
+                <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
+                    <span class="text-xs text-gray-400">👩 Wanita</span>
+                    <h4 class="text-xl font-bold text-pink-400 mt-1" x-text="totalStats.camping.wanita + ' Orang'"></h4>
                 </div>
-                <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
-                    <span class="text-xs text-gray-400">🧒 Anak-Anak (Camping)</span>
-                    <h4 class="text-2xl font-bold text-yellow-400 mt-1" x-text="totalStats.camping.anak + ' Orang'"></h4>
+                <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
+                    <span class="text-xs text-gray-400">🧒 Anak-Anak</span>
+                    <h4 class="text-xl font-bold text-yellow-400 mt-1" x-text="totalStats.camping.anak + ' Orang'"></h4>
                 </div>
-                <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
-                    <span class="text-xs text-gray-400">🌍 Turis Asing (Camping)</span>
-                    <h4 class="text-2xl font-bold text-purple-400 mt-1" x-text="totalStats.camping.turis + ' Orang'"></h4>
+                <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
+                    <span class="text-xs text-gray-400">🌍 Turis Asing</span>
+                    <h4 class="text-xl font-bold text-purple-400 mt-1" x-text="totalStats.camping.turis + ' Orang'"></h4>
                 </div>
             </div>
         </div>
 
         <!-- ================= PANEL 3: PANEL KHUSUS WISATA HARIAN ================= -->
-        <div x-show="activePanel === 'wisata'" class="space-y-6" style="display: none;">
-            <div class="bg-blue-950/40 border border-blue-800/50 p-5 md:p-6 rounded-2xl flex justify-between items-center shadow-xl">
+        <div x-show="activePanel === 'wisata'" class="space-y-4" style="display: none;">
+            <div class="bg-blue-950/30 border border-blue-800/40 p-4 rounded-xl flex justify-between items-center">
                 <div>
-                    <span class="text-xs font-semibold text-blue-400 uppercase">Panel Khusus</span>
-                    <h2 class="text-xl md:text-2xl font-extrabold text-white mt-1">Wisata Harian (Pintu Masuk Utama)</h2>
-                    <p class="text-xs text-gray-300 mt-1">Akumulasi keseluruhan data pengunjung wisata harian.</p>
+                    <span class="text-[11px] font-semibold text-blue-400 uppercase">Panel Khusus</span>
+                    <h2 class="text-lg font-bold text-white">Wisata Harian (Pintu Masuk)</h2>
                 </div>
-                <div class="text-2xl md:text-3xl">🌲</div>
+                <div class="text-2xl">🌲</div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
-                    <span class="text-xs text-gray-400">👨 Laki-Laki (Wisata)</span>
-                    <h4 class="text-2xl font-bold text-blue-400 mt-1" x-text="totalStats.wisata.pria + ' Orang'"></h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
+                    <span class="text-xs text-gray-400">👨 Laki-Laki</span>
+                    <h4 class="text-xl font-bold text-blue-400 mt-1" x-text="totalStats.wisata.pria + ' Orang'"></h4>
                 </div>
-                <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
-                    <span class="text-xs text-gray-400">👩 Wanita (Wisata)</span>
-                    <h4 class="text-2xl font-bold text-pink-400 mt-1" x-text="totalStats.wisata.wanita + ' Orang'"></h4>
+                <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
+                    <span class="text-xs text-gray-400">👩 Wanita</span>
+                    <h4 class="text-xl font-bold text-pink-400 mt-1" x-text="totalStats.wisata.wanita + ' Orang'"></h4>
                 </div>
-                <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
-                    <span class="text-xs text-gray-400">🧒 Anak-Anak (Wisata)</span>
-                    <h4 class="text-2xl font-bold text-yellow-400 mt-1" x-text="totalStats.wisata.anak + ' Orang'"></h4>
+                <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
+                    <span class="text-xs text-gray-400">🧒 Anak-Anak</span>
+                    <h4 class="text-xl font-bold text-yellow-400 mt-1" x-text="totalStats.wisata.anak + ' Orang'"></h4>
                 </div>
-                <div class="bg-gray-800/60 p-5 rounded-xl border border-gray-700">
-                    <span class="text-xs text-gray-400">🌍 Turis Asing (Wisata)</span>
-                    <h4 class="text-2xl font-bold text-purple-400 mt-1" x-text="totalStats.wisata.turis + ' Orang'"></h4>
+                <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
+                    <span class="text-xs text-gray-400">🌍 Turis Asing</span>
+                    <h4 class="text-xl font-bold text-purple-400 mt-1" x-text="totalStats.wisata.turis + ' Orang'"></h4>
                 </div>
             </div>
         </div>
 
         <!-- ================= PANEL 4: LOG AKTIVITAS & MANAJEMEN DATA ================= -->
-        <div x-show="activePanel === 'log'" class="space-y-6" style="display: none;">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div x-show="activePanel === 'log'" class="space-y-4" style="display: none;">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                    <h2 class="text-lg md:text-xl font-bold text-white tracking-wide">Log Aktivitas & Manajemen Data</h2>
-                    <p class="text-xs text-gray-400">Ubah, perbarui, atau hapus data pengunjung melalui panel terproteksi</p>
+                    <h2 class="text-base font-bold text-white">Log Aktivitas & Data</h2>
+                    <p class="text-xs text-gray-400">Kelola data kunjungan</p>
                 </div>
-                <button @click="verifyPin('tambah', null)" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-md">
+                <button @click="verifyPin('tambah', null)" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition">
                     + Tambah Data Baru
                 </button>
             </div>
 
-            <!-- DIPERBAIKI: Menambahkan wrapper overflow-x-auto agar tabel aman digeser di layar HP Potret -->
-            <div class="bg-gray-900/50 border border-gray-800 rounded-2xl shadow-xl w-full">
-                <div class="w-full overflow-x-auto" style="-webkit-overflow-scrolling: touch;">
-                    <table class="w-full text-left border-collapse min-w-[700px]">
+            <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-lg">
+                <div class="overflow-x-auto" style="-webkit-overflow-scrolling: touch;">
+                    <table class="w-full text-left border-collapse min-w-[650px]">
                         <thead>
-                            <tr class="border-b border-gray-800 text-gray-400 text-xs font-semibold tracking-wider">
-                                <th class="py-4 px-4 md:px-6">TANGGAL</th>
-                                <th class="py-4 px-4 md:px-6">KATEGORI</th>
-                                <th class="py-4 px-4 md:px-6">ASAL</th>
-                                <th class="py-4 px-4 md:px-6">DEMOGRAFI (L / W / A / T)</th>
-                                <th class="py-4 px-4 md:px-6">TOTAL</th>
-                                <th class="py-4 px-4 md:px-6">PETUGAS</th>
-                                <th class="py-4 px-4 md:px-6 text-center">AKSI ADMIN</th>
+                            <tr class="border-b border-gray-800 text-gray-400 text-[11px] font-semibold">
+                                <th class="py-3 px-3">TANGGAL</th>
+                                <th class="py-3 px-3">KATEGORI</th>
+                                <th class="py-3 px-3">ASAL</th>
+                                <th class="py-3 px-3">DEMOGRAFI (L/W/A/T)</th>
+                                <th class="py-3 px-3">TOTAL</th>
+                                <th class="py-3 px-3">PETUGAS</th>
+                                <th class="py-3 px-3 text-center">AKSI</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-800/60 text-sm text-gray-300">
+                        <tbody class="divide-y divide-gray-800 text-xs text-gray-300">
                             <template x-if="logs.length === 0">
                                 <tr>
-                                    <td colspan="7" class="py-8 text-center text-gray-500 text-xs">Memuat data dari Google Sheets...</td>
+                                    <td colspan="7" class="py-6 text-center text-gray-500">Memuat data...</td>
                                 </tr>
                             </template>
                             <template x-for="(item, index) in logs" :key="index">
-                                <tr class="hover:bg-gray-800/30 transition">
-                                    <td class="py-4 px-4 md:px-6 font-medium text-white whitespace-nowrap" x-text="item.tanggal"></td>
-                                    <td class="py-4 px-4 md:px-6 whitespace-nowrap">
-                                        <div class="flex gap-1 flex-wrap">
+                                <tr class="hover:bg-gray-800/40">
+                                    <td class="py-3 px-3 text-white whitespace-nowrap" x-text="item.tanggal"></td>
+                                    <td class="py-3 px-3 whitespace-nowrap">
+                                        <div class="flex gap-1">
                                             <template x-if="checkStatus(item.isCamping)">
-                                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-950/80 border border-emerald-800 text-emerald-300">Camping</span>
+                                                <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-950 border border-emerald-800 text-emerald-300">Camping</span>
                                             </template>
                                             <template x-if="checkStatus(item.isWisata)">
-                                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-blue-950/80 border border-blue-800 text-blue-300">Wisata Harian</span>
+                                                <span class="px-2 py-0.5 rounded text-[10px] bg-blue-950 border border-blue-800 text-blue-300">Wisata</span>
                                             </template>
                                         </div>
                                     </td>
-                                    <td class="py-4 px-4 md:px-6" x-text="item.asal"></td>
-                                    <td class="py-4 px-4 md:px-6 text-xs whitespace-nowrap" x-text="item.pria + ' L / ' + item.wanita + ' W / ' + item.anak + ' A / ' + item.turis + ' T'"></td>
-                                    <td class="py-4 px-4 md:px-6 font-bold text-white whitespace-nowrap" x-text="(parseInt(item.pria || 0) + parseInt(item.wanita || 0) + parseInt(item.anak || 0) + parseInt(item.turis || 0)) + ' Orang'"></td>
-                                    <td class="py-4 px-4 md:px-6 text-gray-400" x-text="item.petugas"></td>
-                                    <td class="py-4 px-4 md:px-6 text-center space-x-2 whitespace-nowrap">
-                                        <button @click="verifyPin('ubah', index)" class="px-3 py-1 bg-amber-600/30 border border-amber-600/50 text-amber-400 hover:bg-amber-600 hover:text-white rounded-lg text-xs font-semibold transition">Ubah</button>
-                                        <button @click="verifyPin('hapus', index)" class="px-3 py-1 bg-rose-600/30 border border-rose-600/50 text-rose-400 hover:bg-rose-600 hover:text-white rounded-lg text-xs font-semibold transition">Hapus</button>
+                                    <td class="py-3 px-3" x-text="item.asal"></td>
+                                    <td class="py-3 px-3 whitespace-nowrap" x-text="item.pria + '/' + item.wanita + '/' + item.anak + '/' + item.turis"></td>
+                                    <td class="py-3 px-3 font-bold text-white whitespace-nowrap" x-text="(parseInt(item.pria || 0) + parseInt(item.wanita || 0) + parseInt(item.anak || 0) + parseInt(item.turis || 0))"></td>
+                                    <td class="py-3 px-3 text-gray-400" x-text="item.petugas"></td>
+                                    <td class="py-3 px-3 text-center space-x-1 whitespace-nowrap">
+                                        <button @click="verifyPin('ubah', index)" class="px-2 py-1 bg-amber-600/30 border border-amber-600 text-amber-400 rounded text-[10px]">Ubah</button>
+                                        <button @click="verifyPin('hapus', index)" class="px-2 py-1 bg-rose-600/30 border border-rose-600 text-rose-400 rounded text-[10px]">Hapus</button>
                                     </td>
                                 </tr>
                             </template>
@@ -216,83 +211,81 @@
 
     </main>
 
-    <!-- MODAL POPUP KODE ADMIN -->
-    <div x-show="showPinModal" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50" style="display: none;">
-        <div class="bg-gray-900 border border-gray-700 p-6 rounded-2xl w-full max-w-sm shadow-2xl space-y-4">
-            <h3 class="text-lg font-bold text-white">Autentikasi Admin</h3>
-            <p class="text-xs text-gray-400">Masukkan kode akses untuk melanjutkan tindakan <span class="uppercase text-emerald-400 font-bold" x-text="modalAction"></span> data:</p>
-            <input type="password" x-model="inputPin" placeholder="Masukkan kode akses..." class="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-xl text-white text-center tracking-widest focus:outline-none focus:border-emerald-500">
-            <p x-text="pinError" class="text-xs text-rose-500 text-center" x-show="pinError"></p>
-            <div class="flex gap-2 pt-2">
-                <button @click="showPinModal = false; inputPin = ''; pinError = ''" class="flex-1 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl text-xs font-semibold transition">Batal</button>
-                <button @click="submitPin()" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition">Verifikasi</button>
+    <!-- MODAL PIN -->
+    <div x-show="showPinModal" class="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50" style="display: none;">
+        <div class="bg-gray-900 border border-gray-700 p-5 rounded-2xl w-full max-w-xs space-y-3">
+            <h3 class="text-sm font-bold text-white">Autentikasi Admin</h3>
+            <p class="text-[11px] text-gray-400">Masukkan kode akses:</p>
+            <input type="password" x-model="inputPin" placeholder="••••••" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white text-center tracking-widest text-sm focus:outline-none">
+            <p x-text="pinError" class="text-[11px] text-rose-500 text-center" x-show="pinError"></p>
+            <div class="flex gap-2 pt-1">
+                <button @click="showPinModal = false; inputPin = ''" class="flex-1 px-3 py-1.5 bg-gray-800 text-gray-300 rounded-xl text-xs">Batal</button>
+                <button @click="submitPin()" class="flex-1 px-3 py-1.5 bg-emerald-600 text-white rounded-xl text-xs font-bold">Masuk</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL FORM TAMBAH / UBAH DATA -->
-    <div x-show="showFormModal" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 overflow-y-auto" style="display: none;">
-        <div class="bg-gray-900 border border-gray-700 p-6 rounded-2xl w-full max-w-lg shadow-2xl space-y-4 my-8">
-            <h3 class="text-lg font-bold text-white" x-text="modalAction === 'tambah' ? 'Tambah Data Pengunjung' : 'Ubah Data Pengunjung'"></h3>
+    <!-- MODAL FORM -->
+    <div x-show="showFormModal" class="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 overflow-y-auto" style="display: none;">
+        <div class="bg-gray-900 border border-gray-700 p-5 rounded-2xl w-full max-w-md space-y-3 my-6">
+            <h3 class="text-sm font-bold text-white" x-text="modalAction === 'tambah' ? 'Tambah Data' : 'Ubah Data'"></h3>
             
-            <div class="space-y-3.5">
+            <div class="space-y-2.5 text-xs">
                 <div>
-                    <label class="text-xs text-gray-400 block mb-1">Tanggal Kunjungan</label>
-                    <input type="date" x-model="formData.tanggal" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                    <label class="text-gray-400 block mb-1">Tanggal</label>
+                    <input type="date" x-model="formData.tanggal" class="w-full px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-xl text-white">
                 </div>
 
                 <div>
-                    <label class="text-xs text-gray-400 block mb-1.5 font-semibold">Pilih Kategori Kunjungan</label>
-                    <div class="flex gap-4 bg-gray-800/60 p-3 rounded-xl border border-gray-700">
-                        <label class="flex items-center gap-2 cursor-pointer text-xs text-white">
-                            <input type="checkbox" x-model="formData.isCamping" class="w-4 h-4 accent-emerald-600 rounded cursor-pointer">
-                            🏕️ Camping
+                    <label class="text-gray-400 block mb-1">Kategori</label>
+                    <div class="flex gap-4 bg-gray-800 p-2.5 rounded-xl border border-gray-700">
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" x-model="formData.isCamping" class="accent-emerald-600"> Camping
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer text-xs text-white">
-                            <input type="checkbox" x-model="formData.isWisata" class="w-4 h-4 accent-emerald-600 rounded cursor-pointer">
-                            🌲 Wisata Harian
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" x-model="formData.isWisata" class="accent-emerald-600"> Wisata
                         </label>
                     </div>
                 </div>
 
                 <div>
-                    <label class="text-xs text-gray-400 block mb-1">Asal Pengunjung</label>
-                    <input type="text" x-model="formData.asal" placeholder="Contoh: Majalengka / Bandung" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                    <label class="text-gray-400 block mb-1">Asal Pengunjung</label>
+                    <input type="text" x-model="formData.asal" placeholder="Contoh: Bandung" class="w-full px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-xl text-white">
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="text-xs text-blue-400 block mb-1">👨 Jumlah Laki-Laki</label>
-                        <input type="number" min="0" x-model.number="formData.pria" placeholder="0" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                        <label class="text-blue-400 block mb-1">👨 Pria</label>
+                        <input type="number" min="0" x-model.number="formData.pria" class="w-full px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-xl text-white">
                     </div>
                     <div>
-                        <label class="text-xs text-pink-400 block mb-1">👩 Jumlah Wanita</label>
-                        <input type="number" min="0" x-model.number="formData.wanita" placeholder="0" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                        <label class="text-pink-400 block mb-1">👩 Wanita</label>
+                        <input type="number" min="0" x-model.number="formData.wanita" class="w-full px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-xl text-white">
                     </div>
                     <div>
-                        <label class="text-xs text-yellow-400 block mb-1">🧒 Jumlah Anak-Anak</label>
-                        <input type="number" min="0" x-model.number="formData.anak" placeholder="0" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                        <label class="text-yellow-400 block mb-1">🧒 Anak</label>
+                        <input type="number" min="0" x-model.number="formData.anak" class="w-full px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-xl text-white">
                     </div>
                     <div>
-                        <label class="text-xs text-purple-400 block mb-1">🌍 Turis Asing</label>
-                        <input type="number" min="0" x-model.number="formData.turis" placeholder="0" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                        <label class="text-purple-400 block mb-1">🌍 Turis</label>
+                        <input type="number" min="0" x-model.number="formData.turis" class="w-full px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-xl text-white">
                     </div>
                 </div>
 
                 <div>
-                    <label class="text-xs text-gray-400 block mb-1">Petugas Loket</label>
-                    <input type="text" x-model="formData.petugas" placeholder="Nama Petugas" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white">
+                    <label class="text-gray-400 block mb-1">Petugas</label>
+                    <input type="text" x-model="formData.petugas" placeholder="Nama Petugas" class="w-full px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-xl text-white">
                 </div>
             </div>
 
             <div class="flex gap-2 pt-2">
-                <button @click="showFormModal = false" class="flex-1 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl text-xs font-semibold transition">Batal</button>
-                <button @click="saveData()" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition">Simpan</button>
+                <button @click="showFormModal = false" class="flex-1 px-3 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs">Batal</button>
+                <button @click="saveData()" class="flex-1 px-3 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold">Simpan</button>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT LOGIKA & SHEETDB API INTEGRATION -->
+    <!-- SCRIPT -->
     <script>
         const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/z96cgokflvchx';
 
@@ -306,29 +299,16 @@
                 pinError: '',
                 modalAction: '',
                 selectedIndex: null,
-
                 weeklyChartInstance: null,
                 monthlyChartInstance: null,
-
                 logs: [],
-
-                formData: { 
-                    tanggal: new Date().toISOString().split('T')[0], 
-                    isCamping: true, 
-                    isWisata: false, 
-                    asal: '', 
-                    pria: 0, 
-                    wanita: 0, 
-                    anak: 0, 
-                    turis: 0, 
-                    petugas: '' 
-                },
+                formData: { tanggal: new Date().toISOString().split('T')[0], isCamping: true, isWisata: false, asal: '', pria: 0, wanita: 0, anak: 0, turis: 0, petugas: '' },
 
                 initApp() {
                     setTimeout(() => {
                         this.initCharts();
                         this.fetchDataFromSheet();
-                    }, 100);
+                    }, 150);
                 },
 
                 async fetchDataFromSheet() {
@@ -338,7 +318,7 @@
                         this.logs = data.map((item, idx) => ({ ...item, _rowIndex: idx + 2 })).reverse();
                         this.updateCharts();
                     } catch (error) {
-                        console.error('Gagal memuat data dari SheetDB:', error);
+                        console.error('Gagal memuat data:', error);
                     }
                 },
 
@@ -360,21 +340,10 @@
                         let w = parseInt(item.wanita) || 0;
                         let a = parseInt(item.anak) || 0;
                         let t = parseInt(item.turis) || 0;
-                        let isCamp = this.checkStatus(item.isCamping);
-                        let isWis = this.checkStatus(item.isWisata);
-
-                        if(isCamp) {
-                            cPria += p; cWanita += w; cAnak += a; cTuris += t;
-                        }
-                        if(isWis) {
-                            wPria += p; wWanita += w; wAnak += a; wTuris += t;
-                        }
+                        if(this.checkStatus(item.isCamping)) { cPria += p; cWanita += w; cAnak += a; cTuris += t; }
+                        if(this.checkStatus(item.isWisata)) { wPria += p; wWanita += w; wAnak += a; wTuris += t; }
                     });
-
-                    return {
-                        camping: { pria: cPria, wanita: cWanita, anak: cAnak, turis: cTuris },
-                        wisata: { pria: wPria, wanita: wWanita, anak: wAnak, turis: wTuris }
-                    };
+                    return { camping: { pria: cPria, wanita: cWanita, anak: cAnak, turis: cTuris }, wisata: { pria: wPria, wanita: wWanita, anak: wAnak, turis: wTuris } };
                 },
 
                 get weeklyStats() {
@@ -388,15 +357,11 @@
                         if (!item.tanggal) return;
                         let itemDate = new Date(item.tanggal);
                         itemDate.setHours(0, 0, 0, 0);
-                        
                         if (itemDate >= sevenDaysAgo && itemDate <= targetDate) {
                             let p = parseInt(item.pria) || 0;
                             let w = parseInt(item.wanita) || 0;
-                            let isCamp = this.checkStatus(item.isCamping);
-                            let isWis = this.checkStatus(item.isWisata);
-
-                            if (isCamp) { cP += p; cW += w; }
-                            if (isWis) { wP += p; wW += w; }
+                            if (this.checkStatus(item.isCamping)) { cP += p; cW += w; }
+                            if (this.checkStatus(item.isWisata)) { wP += p; wW += w; }
                         }
                     });
                     return [cP, cW, wP, wW];
@@ -411,15 +376,11 @@
                     this.logs.forEach(item => {
                         if (!item.tanggal) return;
                         let itemDate = new Date(item.tanggal);
-                        
                         if (itemDate.getMonth() === targetMonth && itemDate.getFullYear() === targetYear) {
                             let p = parseInt(item.pria) || 0;
                             let w = parseInt(item.wanita) || 0;
-                            let isCamp = this.checkStatus(item.isCamping);
-                            let isWis = this.checkStatus(item.isWisata);
-
-                            if (isCamp) { cP += p; cW += w; }
-                            if (isWis) { wP += p; wW += w; }
+                            if (this.checkStatus(item.isCamping)) { cP += p; cW += w; }
+                            if (this.checkStatus(item.isWisata)) { wP += p; wW += w; }
                         }
                     });
                     return [cP, cW, wP, wW];
@@ -427,52 +388,33 @@
 
                 initCharts() {
                     Chart.register(ChartDataLabels);
-
                     const commonOptions = {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
-                            legend: { 
-                                position: 'bottom', 
-                                labels: { color: '#9ca3af', font: { size: 10 }, padding: 10 } 
-                            },
+                            legend: { position: 'bottom', labels: { color: '#e5e7eb', font: { size: 11 }, boxWidth: 12, padding: 10 } },
                             datalabels: {
                                 color: '#ffffff',
                                 font: { weight: 'bold', size: 10 },
-                                formatter: (value, ctx) => {
-                                    if (value === 0) return '';
-                                    let label = ctx.chart.data.labels[ctx.dataIndex];
-                                    return `${label}\n(${value})`;
-                                },
-                                textAlign: 'center'
+                                formatter: (value, ctx) => value === 0 ? '' : `${value}`
                             }
                         }
                     };
 
-                    const ctxWeekly = document.getElementById('weeklyDonutChart').getContext('2d');
-                    this.weeklyChartInstance = new Chart(ctxWeekly, {
+                    this.weeklyChartInstance = new Chart(document.getElementById('weeklyDonutChart').getContext('2d'), {
                         type: 'doughnut',
                         data: {
-                            labels: ['Camping (Pria)', 'Camping (Wanita)', 'Wisata (Pria)', 'Wisata (Wanita)'],
-                            datasets: [{
-                                data: [0, 0, 0, 0],
-                                backgroundColor: ['#059669', '#34d399', '#2563eb', '#60a5fa'],
-                                borderWidth: 0
-                            }]
+                            labels: ['Camp(Pria)', 'Camp(Wanita)', 'Wisata(Pria)', 'Wisata(Wanita)'],
+                            datasets: [{ data: [0,0,0,0], backgroundColor: ['#059669', '#34d399', '#2563eb', '#60a5fa'], borderWidth: 0 }]
                         },
                         options: commonOptions
                     });
 
-                    const ctxMonthly = document.getElementById('monthlyDonutChart').getContext('2d');
-                    this.monthlyChartInstance = new Chart(ctxMonthly, {
+                    this.monthlyChartInstance = new Chart(document.getElementById('monthlyDonutChart').getContext('2d'), {
                         type: 'doughnut',
                         data: {
-                            labels: ['Camping (Pria)', 'Camping (Wanita)', 'Wisata (Pria)', 'Wisata (Wanita)'],
-                            datasets: [{
-                                data: [0, 0, 0, 0],
-                                backgroundColor: ['#047857', '#6ee7b7', '#1d4ed8', '#93c5fd'],
-                                borderWidth: 0
-                            }]
+                            labels: ['Camp(Pria)', 'Camp(Wanita)', 'Wisata(Pria)', 'Wisata(Wanita)'],
+                            datasets: [{ data: [0,0,0,0], backgroundColor: ['#047857', '#6ee7b7', '#1d4ed8', '#93c5fd'], borderWidth: 0 }]
                         },
                         options: commonOptions
                     });
@@ -482,7 +424,6 @@
                     if (this.weeklyChartInstance && this.monthlyChartInstance) {
                         this.weeklyChartInstance.data.datasets[0].data = this.weeklyStats;
                         this.weeklyChartInstance.update();
-
                         this.monthlyChartInstance.data.datasets[0].data = this.monthlyStats;
                         this.monthlyChartInstance.update();
                     }
@@ -500,68 +441,47 @@
                     if (this.inputPin === '311294') {
                         this.showPinModal = false;
                         if (this.modalAction === 'hapus') {
-                            let targetItem = this.logs[this.selectedIndex];
-                            this.deleteDataFromSheet(targetItem);
+                            this.deleteDataFromSheet(this.logs[this.selectedIndex]);
                         } else if (this.modalAction === 'tambah') {
-                            this.formData = { 
-                                tanggal: this.selectedDate, 
-                                isCamping: true, 
-                                isWisata: false, 
-                                asal: '', 
-                                pria: 0, 
-                                wanita: 0, 
-                                anak: 0, 
-                                turis: 0, 
-                                petugas: '' 
-                            };
+                            this.formData = { tanggal: this.selectedDate, isCamping: true, isWisata: false, asal: '', pria: 0, wanita: 0, anak: 0, turis: 0, petugas: '' };
                             this.showFormModal = true;
                         } else if (this.modalAction === 'ubah') {
-                            let item = this.logs[this.selectedIndex];
-                            this.formData = { ...item };
+                            this.formData = { ...this.logs[this.selectedIndex] };
                             this.showFormModal = true;
                         }
                     } else {
-                        this.pinError = 'Kode akses salah. Akses ditolak.';
+                        this.pinError = 'Kode akses salah!';
                     }
                 },
 
                 async saveData() {
                     this.showFormModal = false;
-                    
-                    if (this.modalAction === 'tambah') {
-                        try {
+                    try {
+                        if (this.modalAction === 'tambah') {
                             await fetch(SHEETDB_API_URL, {
                                 method: 'POST',
                                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ data: [this.formData] })
                             });
-                            this.fetchDataFromSheet();
-                        } catch (error) {
-                            console.error('Gagal menambah data ke SheetDB:', error);
-                        }
-                    } else if (this.modalAction === 'ubah') {
-                        let originalItem = this.logs[this.selectedIndex];
-                        try {
-                            await fetch(`${SHEETDB_API_URL}/row/${originalItem._rowIndex}`, {
+                        } else if (this.modalAction === 'ubah') {
+                            await fetch(`${SHEETDB_API_URL}/row/${this.logs[this.selectedIndex]._rowIndex}`, {
                                 method: 'PUT',
                                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ data: this.formData })
                             });
-                            this.fetchDataFromSheet();
-                        } catch (error) {
-                            console.error('Gagal mengubah data di SheetDB:', error);
                         }
+                        this.fetchDataFromSheet();
+                    } catch (error) {
+                        console.error('Gagal menyimpan:', error);
                     }
                 },
 
                 async deleteDataFromSheet(item) {
                     try {
-                        await fetch(`${SHEETDB_API_URL}/row/${item._rowIndex}`, {
-                            method: 'DELETE'
-                        });
+                        await fetch(`${SHEETDB_API_URL}/row/${item._rowIndex}`, { method: 'DELETE' });
                         this.fetchDataFromSheet();
                     } catch (error) {
-                        console.error('Gagal menghapus data dari SheetDB:', error);
+                        console.error('Gagal menghapus:', error);
                     }
                 }
             }
