@@ -301,7 +301,7 @@
                 weeklyChartInstance: null,
                 monthlyChartInstance: null,
                 logs: [],
-                formData: { tanggal: new Date().toISOString().split('T')[0], isCamping: true, isWisata: false, asal: '', pria: 0, wanita: 0, anak: 0, turis: 0, petugas: '' },
+                formData: { id: '', tanggal: new Date().toISOString().split('T')[0], isCamping: true, isWisata: false, asal: '', pria: 0, wanita: 0, anak: 0, turis: 0, petugas: '' },
 
                 initApp() {
                     setTimeout(() => {
@@ -442,11 +442,12 @@
                         if (this.modalAction === 'hapus') {
                             this.deleteDataFromSheet(this.logs[this.selectedIndex]);
                         } else if (this.modalAction === 'tambah') {
-                            this.formData = { tanggal: this.selectedDate, isCamping: true, isWisata: false, asal: '', pria: 0, wanita: 0, anak: 0, turis: 0, petugas: '' };
+                            this.formData = { id: 'ID-' + Date.now(), tanggal: this.selectedDate, isCamping: true, isWisata: false, asal: '', pria: 0, wanita: 0, anak: 0, turis: 0, petugas: '' };
                             this.showFormModal = true;
                         } else if (this.modalAction === 'ubah') {
                             let currentItem = this.logs[this.selectedIndex];
                             this.formData = { 
+                                id: currentItem.id || ('ID-' + Date.now()),
                                 tanggal: currentItem.tanggal, 
                                 isCamping: this.checkStatus(currentItem.isCamping), 
                                 isWisata: this.checkStatus(currentItem.isWisata), 
@@ -465,7 +466,7 @@
                 },
 
                 async saveData() {
-                    let activeRowIndex = this.logs[this.selectedIndex]?._rowIndex;
+                    let currentId = this.formData.id;
                     this.showFormModal = false;
                     try {
                         if (this.modalAction === 'tambah') {
@@ -475,7 +476,7 @@
                                 body: JSON.stringify({ data: [this.formData] })
                             });
                         } else if (this.modalAction === 'ubah') {
-                            await fetch(`${SHEETDB_API_URL}/row/${activeRowIndex}`, {
+                            await fetch(`${SHEETDB_API_URL}/id/${currentId}`, {
                                 method: 'PATCH',
                                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ data: this.formData })
@@ -489,7 +490,11 @@
 
                 async deleteDataFromSheet(item) {
                     try {
-                        await fetch(`${SHEETDB_API_URL}/row/${item._rowIndex}`, { method: 'DELETE' });
+                        if (item.id) {
+                            await fetch(`${SHEETDB_API_URL}/id/${item.id}`, { method: 'DELETE' });
+                        } else {
+                            await fetch(`${SHEETDB_API_URL}/row/${item._rowIndex}`, { method: 'DELETE' });
+                        }
                         await this.fetchDataFromSheet();
                     } catch (error) {
                         console.error('Gagal menghapus:', error);
