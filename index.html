@@ -66,7 +66,6 @@
                 </button>
             </div>
 
-            <!-- PERBAIKAN UTAMA: grid-cols-1 agar di HP potret tersusun vertikal ke bawah dengan lebar penuh -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                 <!-- Donat Mingguan -->
                 <div class="bg-gray-900/90 border border-gray-800 p-4 rounded-2xl shadow-lg flex flex-col items-center">
@@ -446,7 +445,18 @@
                             this.formData = { tanggal: this.selectedDate, isCamping: true, isWisata: false, asal: '', pria: 0, wanita: 0, anak: 0, turis: 0, petugas: '' };
                             this.showFormModal = true;
                         } else if (this.modalAction === 'ubah') {
-                            this.formData = { ...this.logs[this.selectedIndex] };
+                            let currentItem = this.logs[this.selectedIndex];
+                            this.formData = { 
+                                tanggal: currentItem.tanggal, 
+                                isCamping: this.checkStatus(currentItem.isCamping), 
+                                isWisata: this.checkStatus(currentItem.isWisata), 
+                                asal: currentItem.asal, 
+                                pria: parseInt(currentItem.pria) || 0, 
+                                wanita: parseInt(currentItem.wanita) || 0, 
+                                anak: parseInt(currentItem.anak) || 0, 
+                                turis: parseInt(currentItem.turis) || 0, 
+                                petugas: currentItem.petugas 
+                            };
                             this.showFormModal = true;
                         }
                     } else {
@@ -455,6 +465,7 @@
                 },
 
                 async saveData() {
+                    let activeRowIndex = this.logs[this.selectedIndex]?._rowIndex;
                     this.showFormModal = false;
                     try {
                         if (this.modalAction === 'tambah') {
@@ -464,13 +475,13 @@
                                 body: JSON.stringify({ data: [this.formData] })
                             });
                         } else if (this.modalAction === 'ubah') {
-                            await fetch(`${SHEETDB_API_URL}/row/${this.logs[this.selectedIndex]._rowIndex}`, {
+                            await fetch(`${SHEETDB_API_URL}/row/${activeRowIndex}`, {
                                 method: 'PUT',
                                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ data: this.formData })
                             });
                         }
-                        this.fetchDataFromSheet();
+                        await this.fetchDataFromSheet();
                     } catch (error) {
                         console.error('Gagal menyimpan:', error);
                     }
@@ -479,7 +490,7 @@
                 async deleteDataFromSheet(item) {
                     try {
                         await fetch(`${SHEETDB_API_URL}/row/${item._rowIndex}`, { method: 'DELETE' });
-                        this.fetchDataFromSheet();
+                        await this.fetchDataFromSheet();
                     } catch (error) {
                         console.error('Gagal menghapus:', error);
                     }
