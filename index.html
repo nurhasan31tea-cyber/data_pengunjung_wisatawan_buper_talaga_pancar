@@ -476,9 +476,9 @@
                             });
                         } else if (this.modalAction === 'ubah') {
                             await fetch(`${SHEETDB_API_URL}/row/${activeRowIndex}`, {
-                                method: 'PUT',
+                                method: 'PATCH',
                                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                                body: JSON.stringify(this.formData)
+                                body: JSON.stringify({ data: this.formData })
                             });
                         }
                         await this.fetchDataFromSheet();
