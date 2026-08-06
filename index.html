@@ -478,7 +478,7 @@
                             await fetch(`${SHEETDB_API_URL}/row/${activeRowIndex}`, {
                                 method: 'PUT',
                                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ data: this.formData })
+                                body: JSON.stringify(this.formData)
                             });
                         }
                         await this.fetchDataFromSheet();
